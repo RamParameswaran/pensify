@@ -87,10 +87,30 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "pensify.users.apps.UsersConfig",
+    "pensify.notes.apps.NotesConfig",
+    "pensify.frontend_desktop.apps.FrontendDesktopConfig",
     # Your stuff: custom apps go here
 ]
+
+WAGTAIL_APPS = [
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+
+    'modelcluster',
+    'taggit',
+]
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + WAGTAIL_APPS
 
 # MIGRATIONS
 # ------------------------------------------------------------------------------
@@ -143,6 +163,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 # STATIC
@@ -296,10 +319,8 @@ REST_FRAMEWORK = {
 }
 
 
-# ACCOUNT_FORMS = {
-#                   'signup': 'menda.users.forms.Signup_Form',
-# }
-
-
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+# TAGGIT
+TAGGIT_CASE_INSENSITIVE = True

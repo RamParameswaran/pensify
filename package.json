@@ -1,0 +1,36 @@
+{
+  "name": "pensify",
+  "version": "1.0.0",
+  "description": "NoteProject ===========",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "webpack --mode development --watch true ./pensify/frontend_desktop/src/index.js --output ./pensify/static/frontend_desktop/main.js",
+    "build": "webpack --mode production ./pensify/frontend_desktop/src/index.js --output ./pensify/static/frontend_desktop/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RamParameswaran/pensify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RamParameswaran/pensify/issues"
+  },
+  "homepage": "https://github.com/RamParameswaran/pensify#readme",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
