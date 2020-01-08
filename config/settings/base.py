@@ -43,18 +43,24 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'pensify.db',
-    }
-}
-DATABASES["default"]["ATOMIC_REQUESTS"] = True
-
 # DATABASES = {
-#     "default": env.db("DATABASE_URL", default="postgres:///pensify")
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'pensify.db',
+#     }
 # }
 # DATABASES["default"]["ATOMIC_REQUESTS"] = True
+
+DATABASES = {
+    'default': {'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'pensify',
+                'USER': 'pensify_admin',
+                'PASSWORD': 'Lond2345!',
+                'HOST': '127.0.0.1',
+                'PORT': '5432',
+                }
+}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -107,6 +113,7 @@ WAGTAIL_APPS = [
 
     'modelcluster',
     'taggit',
+    'taggit_serializer'
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
