@@ -4,7 +4,8 @@
 
 {% block content %}
 <div id="react-app"></div>
+{% endblock %}
 
-<script src="{% static 'frontend_desktop/main.js' %}"></script>
-
+{% block javascript %}
+<script src="{% static 'frontend_desktop/main.js' %}?v=4"></script>
 {% endblock %}
