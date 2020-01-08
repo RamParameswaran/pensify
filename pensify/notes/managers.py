@@ -41,8 +41,6 @@ class NoteManager(models.Manager):
     def create(self, **kwargs):
         instance = self.model(**kwargs)
 
-        print("ASKJ")
-
         with transaction.atomic():
             # Get our current max order number
             results = self.filter(

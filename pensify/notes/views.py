@@ -14,6 +14,9 @@ class NoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user).order_by('order')
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     @action(methods=['post'], detail=True)
     def move(self, request, pk):
         """ Move a single Step to a new position """
