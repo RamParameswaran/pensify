@@ -10,7 +10,7 @@ class NoteSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ['uuid', 'created', 'modified', 'title', 'order', 'starred', 'contentState', 'plain_text'
+        fields = ['uuid', 'created', 'modified', 'topic', 'title', 'order', 'starred', 'contentState', 'plain_text'
                   #   'tags'
                   ]
         read_only_fields = ['modified', 'order']

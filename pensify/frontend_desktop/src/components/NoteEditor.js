@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import axios from "axios";
 
 import {
@@ -21,18 +21,21 @@ const generateUUID = () => {
       .substring(2, 15)
   );
 };
+
 class NoteEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editorState: EditorState.createEmpty(),
       uuid: generateUUID(),
+      topic: "",
       title: "",
       tags: "",
-      content: ""
+      editorState: EditorState.createEmpty()
     };
 
-    this.onChange = this.onChange.bind(this);
+    this.postNote = this.postNote.bind(this);
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.onEditorStateChange = this.onEditorStateChange.bind(this);
     this.toggleInlineStyle = this.toggleInlineStyle.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this.toggleBlockType = this.toggleBlockType.bind(this);
@@ -43,6 +46,7 @@ class NoteEditor extends React.Component {
     if (prevProps.currentNote !== this.props.currentNote) {
       if (this.props.currentNote === null) {
         this.setState({
+          topic: "",
           title: "",
           tags: "",
           uuid: generateUUID(),
@@ -52,6 +56,7 @@ class NoteEditor extends React.Component {
         const storedState = convertFromRaw(this.props.currentNote.contentState);
 
         this.setState({
+          topic: this.props.currentNote.topic,
           title: this.props.currentNote.title,
           tags: this.props.currentNote.tags,
           uuid: this.props.currentNote.uuid,
@@ -61,63 +66,65 @@ class NoteEditor extends React.Component {
     }
   };
 
-  changeTitle = event => {
-    this.setState({ title: event.target.value });
-  };
-
-  changeTags = event => {
-    this.setState({ tags: event.target.value.split() });
-  };
-
-  onChange(editorState) {
-    this.setState({ editorState });
-    this.setState({
-      content: JSON.stringify(
-        convertToRaw(this.state.editorState.getCurrentContent())
-      )
-    });
-
-    var duration = 1000;
-    clearTimeout(this.inputTimer);
-    this.inputTimer = setTimeout(() => {
-      const formData = new FormData();
-      formData.append("uuid", this.state.uuid);
-      formData.append("title", this.state.title);
-      formData.append("tags", this.state.tags);
-      formData.append("contentState", this.state.content);
-      formData.append(
-        "plain_text",
-        this.state.editorState.getCurrentContent().getPlainText("\u0001")
-      );
-
-      const url = "api/notes/";
-      axios.post(url, formData);
-    }, duration);
-  }
-
-  submitNote = e => {
-    e.preventDefault();
-
+  postNote() {
     const formData = new FormData();
     formData.append("uuid", this.state.uuid);
+    formData.append("topic", this.state.topic);
     formData.append("title", this.state.title);
     formData.append("tags", this.state.tags);
-    formData.append("contentState", this.state.content);
+    formData.append(
+      "contentState",
+      JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()))
+    );
     formData.append(
       "plain_text",
       this.state.editorState.getCurrentContent().getPlainText("\u0001")
     );
 
     const url = "api/notes/";
-    axios.post(url, formData);
+
+    if (
+      this.state.topic !== "" ||
+      this.state.title !== "" ||
+      this.state.editorState.getCurrentContent().hasText()
+    ) {
+      axios.post(url, formData);
+    }
+  }
+
+  handleFieldChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+
+    var duration = 1000;
+    clearTimeout(this.inputTimer);
+    this.inputTimer = setTimeout(() => {
+      this.postNote();
+    }, duration);
+  }
+
+  onEditorStateChange(editorState) {
+    this.setState({ editorState });
+
+    var duration = 1000;
+    clearTimeout(this.inputTimer);
+    this.inputTimer = setTimeout(() => {
+      this.postNote();
+    }, duration);
+  }
+
+  submitNote = e => {
+    e.preventDefault();
+    this.postNote();
 
     this.setState({
-      editorState: EditorState.createEmpty(),
-      uuid: null,
+      topic: "",
       title: "",
       tags: "",
-      content: {}
+      uuid: generateUUID(),
+      editorState: EditorState.createEmpty()
     });
+
+    this.props.setCurrentNote(null);
   };
 
   keyBindingFunction = event => {
@@ -301,58 +308,68 @@ class NoteEditor extends React.Component {
     ];
 
     return (
-      <div className="note-form">
-        <div id="title">
-          <input
-            type="text"
-            placeholder="Note title"
-            value={this.state.title}
-            onChange={this.changeTitle}
-          />
-        </div>
-
-        <div id="tags">
-          <input
-            type="text"
-            placeholder="Note tags"
-            value={this.state.tags}
-            onChange={this.changeTags}
-          />
-        </div>
-
-        <div id="note">
-          {inlineStyleButtons.map(button => {
-            return this.renderInlineStyleButton(button.value, button.style);
-          })}
-          {blockTypeButtons.map(button => {
-            return this.renderBlockButton(button.value, button.block);
-          })}
-
-          <div className="draft-editor-wrapper">
-            <Editor
-              editorState={this.state.editorState}
-              onChange={this.onChange}
-              handleKeyCommand={this.handleKeyCommand}
-              keyBindingFn={this.keyBindingFunction}
+      <Fragment>
+        <div
+          id={this.props.currentNote ? "blackout" : ""}
+          onClick={this.props.setCurrentNote.bind(this, null)}
+        ></div>
+        <div
+          className={this.props.currentNote ? "note-form overlay" : "note-form"}
+        >
+          <div id="topic">
+            <input
+              type="text"
+              placeholder="Topic"
+              value={this.state.topic}
+              name="topic"
+              onChange={this.handleFieldChange}
             />
           </div>
-        </div>
-        <button className="btn btn-primary" onClick={this.submitNote}>
-          Save
-        </button>
-        {this.props.currentNote !== null ? (
-          <button
-            className="btn btn-primary"
-            onClick={() => {
-              this.props.setCurrentNote(null);
-            }}
-          >
-            Close
+
+          <div id="title">
+            <input
+              type="text"
+              placeholder="Note title"
+              value={this.state.title}
+              name="title"
+              onChange={this.handleFieldChange}
+            />
+          </div>
+
+          <div id="note">
+            {inlineStyleButtons.map(button => {
+              return this.renderInlineStyleButton(button.value, button.style);
+            })}
+            {blockTypeButtons.map(button => {
+              return this.renderBlockButton(button.value, button.block);
+            })}
+
+            <div className="draft-editor-wrapper">
+              <Editor
+                editorState={this.state.editorState}
+                onChange={this.onEditorStateChange}
+                handleKeyCommand={this.handleKeyCommand}
+                keyBindingFn={this.keyBindingFunction}
+              />
+            </div>
+          </div>
+          <button className="btn btn-primary" onClick={this.submitNote}>
+            Save
           </button>
-        ) : (
-          ""
-        )}
-      </div>
+          {this.props.currentNote !== null ? (
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                this.props.setCurrentNote(null);
+              }}
+            >
+              Close
+            </button>
+          ) : (
+            ""
+          )}
+        </div>
+      </Fragment>
     );
   }
 }

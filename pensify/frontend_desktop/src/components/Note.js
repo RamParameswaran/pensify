@@ -15,6 +15,7 @@ const Note = ({ note, setCurrentNote }) => {
         }}
       >
         <div className="card-body">
+          <h3>{note.topic}</h3>
           <h5>{note.title}</h5>
           <Editor
             editorState={EditorState.createWithContent(storedState)}
