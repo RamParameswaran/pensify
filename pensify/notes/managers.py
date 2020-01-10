@@ -17,6 +17,7 @@ class NoteManager(models.Manager):
             if obj.order > int(new_order):
                 qs.filter(
                     user=obj.user,
+                    topic=obj.topic,
                     order__lt=obj.order,
                     order__gte=new_order,
                 ).exclude(
@@ -27,6 +28,7 @@ class NoteManager(models.Manager):
             else:
                 qs.filter(
                     user=obj.user,
+                    topic=obj.topic,
                     order__lte=new_order,
                     order__gt=obj.order,
                 ).exclude(
@@ -44,7 +46,9 @@ class NoteManager(models.Manager):
         with transaction.atomic():
             # Get our current max order number
             results = self.filter(
-                user=instance.user
+                user=instance.user,
+                topic=instance.topic
+
             ).aggregate(
                 Max('order')
             )

@@ -12,11 +12,13 @@ from users.models import User
 
 
 class Note(models.Model):
+    objects = NoteManager()
+
     user = models.ForeignKey(User, related_name="notes", on_delete=models.CASCADE)
 
     created = models.DateTimeField(editable=False, blank=True)
     modified = models.DateTimeField(blank=True)
-    uuid = models.CharField(max_length=32, null=True, blank=True)
+    uuid = models.CharField(max_length=32, null=True, blank=True, unique=True)
     order = models.IntegerField(default=1)
 
     topic = models.CharField(max_length=255, blank=True, null=True)

@@ -14,10 +14,3 @@ class NoteSerializer(TaggitSerializer, serializers.ModelSerializer):
                   #   'tags'
                   ]
         read_only_fields = ['modified', 'order']
-
-    def create(self, validated_data):
-        match = Note.objects.filter(uuid=validated_data['uuid']).first()
-        if match:
-            return super().update(match, validated_data)
-        else:
-            return super().create(validated_data)

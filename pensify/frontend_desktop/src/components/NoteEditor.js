@@ -81,14 +81,14 @@ class NoteEditor extends React.Component {
       this.state.editorState.getCurrentContent().getPlainText("\u0001")
     );
 
-    const url = "api/notes/";
+    const url = `api/notes/${this.state.uuid}/`;
 
     if (
-      this.state.topic !== "" ||
+      //   this.state.topic !== "" ||
       this.state.title !== "" ||
       this.state.editorState.getCurrentContent().hasText()
     ) {
-      axios.post(url, formData);
+      axios.put(url, formData);
     }
   }
 
@@ -125,6 +125,12 @@ class NoteEditor extends React.Component {
     });
 
     this.props.setCurrentNote(null);
+
+    var duration = 500;
+    clearTimeout(this.inputTimer);
+    this.inputTimer = setTimeout(() => {
+      this.props.getNotes();
+    }, duration);
   };
 
   keyBindingFunction = event => {
@@ -356,18 +362,6 @@ class NoteEditor extends React.Component {
           <button className="btn btn-primary" onClick={this.submitNote}>
             Save
           </button>
-          {this.props.currentNote !== null ? (
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                this.props.setCurrentNote(null);
-              }}
-            >
-              Close
-            </button>
-          ) : (
-            ""
-          )}
         </div>
       </Fragment>
     );

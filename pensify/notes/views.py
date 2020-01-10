@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,11 +10,20 @@ from .serializers import NoteSerializer
 
 class NoteViewSet(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
+    lookup_url_kwarg = "uuid"
+    lookup_field = "uuid"
     # filter_backends = (DjangoFilterBackend, )
     # filter_fields = ('task', )
 
     def get_queryset(self):
         return Note.objects.filter(user=self.request.user).order_by('order')
+
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            return super().update(request, *args, **kwargs)
+        except Http404:
+            return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -3,28 +3,48 @@ import ReactDOM from "react-dom";
 
 import { Editor, convertFromRaw, EditorState } from "draft-js";
 
-const Note = ({ note, setCurrentNote }) => {
-  const storedState = convertFromRaw(note.contentState);
+const formatNoteTitle = title => {
+  if (title === "") {
+    return (
+      <h5>
+        <i>Untitled</i>
+      </h5>
+    );
+  } else {
+    return <h5>{title}</h5>;
+  }
+};
 
+const TopicBlock = ({ group, setCurrentNote }) => {
   return (
     <Fragment>
-      <div
-        className="card"
-        onClick={() => {
-          setCurrentNote(note);
-        }}
-      >
-        <div className="card-body">
-          <h3>{note.topic}</h3>
-          <h5>{note.title}</h5>
-          <Editor
-            editorState={EditorState.createWithContent(storedState)}
-            readOnly={true}
-          />
+      <div className="card">
+        <div className="card-body topic-group">
+          <h3>{group.topic}</h3>
+          {/* Iterate through groups */}
+          {group.notes.map(note => (
+            <Fragment>
+              {/* Create card element with title for the Topic Group */}
+              <div
+                className="card"
+                onClick={() => {
+                  setCurrentNote(note);
+                }}
+              >
+                {formatNoteTitle(note.title)}
+                <Editor
+                  editorState={EditorState.createWithContent(
+                    convertFromRaw(note.contentState)
+                  )}
+                  readOnly={true}
+                />
+              </div>
+            </Fragment>
+          ))}
         </div>
       </div>
     </Fragment>
   );
 };
 
-export default Note;
+export default TopicBlock;
