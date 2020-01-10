@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "axios": "^0.19.1",
-    "draft-js": "^0.11.4"
+    "draft-js": "^0.11.4",
+    "react-masonry-css": "^1.0.14"
   }
 }

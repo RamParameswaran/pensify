@@ -6,6 +6,7 @@ import axios from "axios";
 
 import TopicBlock from "./Note";
 import NoteEditor from "./NoteEditor";
+import Masonry from "react-masonry-css";
 
 function groupBy(list, keyGetter) {
   const map = new Map();
@@ -60,6 +61,12 @@ const App = () => {
   }, []);
 
   const [currentNote, setCurrentNote] = useState(null); // dict containing current note info
+  const breakpointColumnsObj = {
+    default: 3,
+    1100: 3,
+    800: 2,
+    500: 1
+  };
 
   return (
     <Fragment>
@@ -72,23 +79,21 @@ const App = () => {
       />
 
       {/* List existing notes */}
-      {notes_grouped.map((group, index) => (
-        <TopicBlock
-          group={group}
-          index={index}
-          key={index}
-          setCurrentNote={setCurrentNote}
-        />
-      ))}
 
-      {/* {notes.map((note, index) => (
-        <Note
-          note={note}
-          index={index}
-          key={note.id}
-          setCurrentNote={setCurrentNote}
-        />
-      ))} */}
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="my-masonry-grid"
+        columnClassName="my-masonry-grid_column"
+      >
+        {notes_grouped.map((group, index) => (
+          <TopicBlock
+            group={group}
+            index={index}
+            key={index}
+            setCurrentNote={setCurrentNote}
+          />
+        ))}
+      </Masonry>
     </Fragment>
   );
 };
