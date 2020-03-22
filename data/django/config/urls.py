@@ -6,9 +6,6 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="frontend_desktop/frontend.html"), name="frontend"),
-
-
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

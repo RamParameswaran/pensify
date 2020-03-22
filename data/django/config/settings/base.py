@@ -94,7 +94,6 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "pensify.users.apps.UsersConfig",
     "pensify.notes.apps.NotesConfig",
-    "pensify.frontend_desktop.apps.FrontendDesktopConfig",
     # Your stuff: custom apps go here
 ]
 
