@@ -19,7 +19,7 @@ app.use(morgan('dev'))
 
 // Body Parser Middleware
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
@@ -38,8 +38,8 @@ app.use((req, res, next) => {
 })
 
 // Routes which should handle requests
-app.use('/api/v1/products', productRoutes)
 app.use('/api/v1/user', userRoutes)
+// app.use('/api/v1/products', productRoutes)
 
 app.use((req, res, next) => {
     const error = new Error('Not found')
