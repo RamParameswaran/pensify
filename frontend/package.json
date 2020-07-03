@@ -1,0 +1,52 @@
+{
+    "name": "Pensify",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@material-ui/core": "^4.9.7",
+        "@material-ui/icons": "^4.9.1",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.5.0",
+        "@testing-library/user-event": "^7.2.1",
+        "classnames": "^2.2.6",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-masonry-css": "^1.0.14",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.4.1",
+        "react-alert": "^7.0.0",
+        "react-alert-template-basic": "^1.0.0",
+        "react-facebook-login": "^4.1.1",
+        "react-ga": "^2.7.0",
+        "react-google-login": "^5.1.20"
+    },
+    "scripts": {
+        "analyze": "source-map-explorer 'build/static/js/*.js'",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
+        "eject": "react-scripts eject"
+    },
+    "jest": {
+        "collectCoverage": true,
+        "coverageReporters": [
+            "html"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "react-test-renderer": "^16.13.1"
+    }
+}
