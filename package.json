@@ -6,9 +6,11 @@
     "scripts": {
         "test": "react-scripts test",
         "start": "npm-run-all --parallel backend frontend",
-        "backend": "cd backend && node app.js",
+        "backend": "cd backend && npm run start",
         "frontend": "cd frontend && npm run start",
-        "install-all": "npm install && npm run installFrontend && npm run installBackend",
+        "installFrontend": "cd frontend && npm install",
+        "installBackend": "cd backend && npm install",
+        "install-all": "npm run installFrontend && npm run installBackend"
     },
     "author": "Ram Parameswaran",
     "license": "MIT",
