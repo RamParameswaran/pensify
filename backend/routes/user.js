@@ -14,7 +14,7 @@ function createAuthToken(email, id) {
     return jwt.sign(
         {
             email: email,
-            userId: id,
+            id: id,
         },
         process.env.JWT_KEY,
         {
@@ -97,13 +97,11 @@ router.post('/login-with-facebook', (req, res, next) => {
         },
     })
         .then((payload) => {
-            console.log(payload)
             // Search if a user with this email address exists yet:
             User.findOne({ email: payload.data.email })
                 .exec()
                 .then((existingUser) => {
                     if (existingUser) {
-                        console.log('Returning existing user')
                         // GET EXISTING USER INSTANCE FROM DB
                         // Sign in this existing user
                         res.status(201).json({
@@ -114,13 +112,12 @@ router.post('/login-with-facebook', (req, res, next) => {
                             ),
                         })
                     } else {
-                        console.log('Creating new user')
                         // CREATE A NEW USER IN DB
                         const user = new User({
                             email: payload.data.email,
                             name: payload.data.name,
-                            firstName: payload.data.given_name,
-                            lastName: payload.data.family_name,
+                            firstName: payload.data.first_name,
+                            lastName: payload.data.last_name,
                             profilePicUrl: `https://graph.facebook.com/${payload.data.id}/picture?type=large`,
                         })
                         user.save()
@@ -157,8 +154,16 @@ router.post('/login-with-facebook', (req, res, next) => {
         })
 })
 
-router.get('/', checkAuth, (req, res, next) => {
-    res.status(200).json({ data: 'success!' })
+router.get('/me', checkAuth, (req, res, next) => {
+    User.findOne({ _id: req.user.id })
+        .exec()
+        .then((existingUser) => {
+            res.status(200).json(existingUser)
+        })
+        .catch((err) => {
+            console.log(err)
+            res.status(500).json({ error: err })
+        })
 })
 
 module.exports = router
