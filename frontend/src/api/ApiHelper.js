@@ -28,7 +28,6 @@ const ApiHelper = function (options) {
     }
 
     const onError = function (error) {
-        console.log(error.response.status)
         if (error.response.status === 401) {
             localStorage.removeItem('token')
         }

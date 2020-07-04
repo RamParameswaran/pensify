@@ -35,11 +35,31 @@ const AuthProvider = (props) => {
         // Show FullscreenSpinner while user object is verified (`getUser` method)
         setLoading(true)
 
+        // On page load: Get current user from the JWT token in localStorage
         AuthApi.getUser()
             .then((res) => {
                 setState({ ...state, ...res })
             })
             .catch((err) => {})
+
+        // Every X seconds: Recheck the JWT token is valid, and log out user if expired or missing.
+        setInterval(() => {
+            AuthApi.getUser()
+                .then((res) => {
+                    setState({ ...state, ...res })
+                })
+                .catch((err) => {
+                    setState({
+                        ...state,
+                        _id: null,
+                        email: null,
+                        name: null,
+                        firstName: null,
+                        lastName: null,
+                        profilePicUrl: null,
+                    })
+                })
+        }, 15000)
 
         setLoading(false)
     }, [])
