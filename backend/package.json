@@ -10,7 +10,9 @@
     "author": "Ram Parameswaran",
     "license": "MIT",
     "dependencies": {
+        "axios": "^0.19.2",
         "bcrypt": "^5.0.0",
+        "cors": "^2.8.5",
         "express": "^4.17.1",
         "google-auth-library": "^6.0.2",
         "jsonwebtoken": "^8.1.0",

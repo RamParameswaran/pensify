@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 const productRoutes = require('./routes/products')
 const userRoutes = require('./routes/user')
@@ -15,6 +16,8 @@ mongoose.connect(
 mongoose.Promise = global.Promise
 
 app.use(morgan('dev'))
+app.use(cors())
+
 // app.use('/uploads', express.static('uploads'));
 
 // Body Parser Middleware
