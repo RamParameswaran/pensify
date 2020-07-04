@@ -2,47 +2,61 @@
 // Author: Ram Parameswaran
 // Date 31/03/2020
 
-import config from "../config";
-import axios from "axios";
-import env from "config/env";
+import config from '../config'
+import axios from 'axios'
+import env from 'config/env'
 
-axios.defaults.withCredentials = false;
+axios.defaults.withCredentials = false
 
 const client = axios.create({
-  baseURL: config.API_BASE_URL,
-});
+    baseURL: config.API_BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+})
+
+client.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('token')
+    config.headers.Authorization = token ? `Bearer ${token}` : ''
+    return config
+})
 
 const ApiHelper = function (options) {
-  const onSuccess = function (response) {
-    // console.debug("Request Successful!", response);
-    return response.data;
-  };
-
-  const onError = function (error) {
-    if (env.mode === "dev") {
-      // console.error("Request Failed:", error.config);
+    const onSuccess = function (response) {
+        // console.debug("Request Successful!", response);
+        return response.data
     }
 
-    if (error.response) {
-      // Request was made but server responded with something
-      // other than 2xx
-      if (env.mode === "dev") {
-        // console.error("Status:", error.response.status);
-        // console.error("Data:", error.response.data);
-        // console.error("Headers:", error.response.headers);
-      }
-    } else {
-      // Something else happened while setting up the request
-      // triggered the error
-      if (env.mode === "dev") {
-        // console.error("Error Message:", error.message);
-      }
+    const onError = function (error) {
+        console.log(error.response.status)
+        if (error.response.status === 401) {
+            localStorage.removeItem('token')
+        }
+
+        if (env.mode === 'dev') {
+            // console.error("Request Failed:", error.config);
+        }
+
+        if (error.response) {
+            // Request was made but server responded with something
+            // other than 2xx
+            if (env.mode === 'dev') {
+                // console.error("Status:", error.response.status);
+                // console.error("Data:", error.response.data);
+                // console.error("Headers:", error.response.headers);
+            }
+        } else {
+            // Something else happened while setting up the request
+            // triggered the error
+            if (env.mode === 'dev') {
+                // console.error("Error Message:", error.message);
+            }
+        }
+
+        return Promise.reject(error.response || error.message)
     }
 
-    return Promise.reject(error.response || error.message);
-  };
+    return client(options).then(onSuccess).catch(onError)
+}
 
-  return client(options).then(onSuccess).catch(onError);
-};
-
-export default ApiHelper;
+export default ApiHelper

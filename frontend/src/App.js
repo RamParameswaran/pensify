@@ -3,14 +3,15 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // APIs & utils
 import config from 'config'
+import { AuthProvider } from 'components/auth/AuthContext'
 
 // Screens
-import Home from 'screens/home/Home'
+import Login from 'screens/login/Login'
+// import Home from 'screens/home/Home'
 
 // Context
 
 // Components
-
 import ReactGA from 'react-ga'
 
 // Styles
@@ -52,9 +53,11 @@ function App() {
 
     return (
         <AlertProvider template={AlertTemplate} {...alert_options}>
-            <div className={classes.root}>
-                <BrowserRouter>
-                    {/* <Header /> */}
+            <AuthProvider>
+                <div className={classes.root}>
+                    <Login />
+                    {/* <BrowserRouter>
+                    <Header />
 
                     <div id="scrollable-content" className={classes.scrollable}>
                         <Switch>
@@ -62,9 +65,10 @@ function App() {
                         </Switch>
                     </div>
 
-                    {/* <Footer /> */}
-                </BrowserRouter>
-            </div>
+                    <Footer />
+                </BrowserRouter> */}
+                </div>
+            </AuthProvider>
         </AlertProvider>
     )
 }

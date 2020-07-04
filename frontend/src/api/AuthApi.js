@@ -1,14 +1,36 @@
-import ApiHelper from "./ApiHelper";
+import ApiHelper from './ApiHelper'
 
-// function signIn() {
-// 	return ApiHelper({
-// 		url: "/users/sign-in",
-//         method: "POST",
-// 	});
-// }
+function signInWithFacebook(accessToken) {
+    return ApiHelper({
+        url: '/user/login-with-facebook',
+        method: 'POST',
+        data: {
+            accessToken: accessToken,
+        },
+    })
+}
 
-// const UserApi = {
-//     signIn
-// };
+function signInWithGoogle(idToken) {
+    return ApiHelper({
+        url: '/user/login-with-google',
+        method: 'POST',
+        data: {
+            idToken: idToken,
+        },
+    })
+}
 
-export default UserApi;
+function getUser() {
+    return ApiHelper({
+        url: '/user/me',
+        method: 'GET',
+    })
+}
+
+const UserApi = {
+    signInWithFacebook,
+    signInWithGoogle,
+    getUser,
+}
+
+export default UserApi
