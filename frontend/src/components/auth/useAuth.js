@@ -30,7 +30,7 @@ const useAuth = () => {
     return {
         clearUser,
         setUser,
-        name: `${state.name}`,
+        user: state,
     }
 }
 
