@@ -4,6 +4,10 @@ const morgan = require('morgan')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
+const swaggerUi = require('swagger-ui-express')
+// const swaggerDocument = require('./swagger.json')
+const swaggerJsdoc = require('swagger-jsdoc')
+
 const productRoutes = require('./routes/products')
 const userRoutes = require('./routes/user')
 
@@ -18,7 +22,41 @@ mongoose.Promise = global.Promise
 app.use(morgan('dev'))
 app.use(cors())
 
-// app.use('/uploads', express.static('uploads'));
+// Swagger auto-generated documentation
+// Swagger set up
+const options = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Pensify',
+            version: '0.0.1',
+            description: 'Pensify Note Taking Application',
+            license: {
+                name: 'MIT',
+                url: 'https://choosealicense.com/licenses/mit/',
+            },
+            contact: {
+                name: 'Ram Parameswaran',
+                url: 'https://findram.dev',
+                email: 'ramanan.parameswaran@gmail.com',
+            },
+        },
+        servers: [
+            {
+                url: 'http://localhost:5000/api/v1',
+            },
+        ],
+    },
+    apis: ['./routes/*.js'],
+}
+const specs = swaggerJsdoc(options)
+app.use(
+    '/documentation',
+    swaggerUi.serve,
+    swaggerUi.setup(specs, {
+        explorer: true,
+    })
+)
 
 // Body Parser Middleware
 app.use(express.json())

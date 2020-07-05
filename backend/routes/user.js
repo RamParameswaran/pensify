@@ -154,6 +154,27 @@ router.post('/login-with-facebook', (req, res, next) => {
         })
 })
 
+/**
+ * @swagger
+ * path:
+ *  /users/:
+ *    post:
+ *      summary: Checks that the current user's JWT is valid, and returns the user object.
+ *      tags: [Users]
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/models/user'
+ *      responses:
+ *        "200":
+ *          description: A user schema
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: '#/models/user'
+ */
 router.get('/me', checkAuth, (req, res, next) => {
     User.findOne({ _id: req.user.id })
         .exec()
