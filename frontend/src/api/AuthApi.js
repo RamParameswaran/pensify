@@ -27,10 +27,16 @@ function getUser() {
     })
 }
 
+function logout() {
+    localStorage.removeItem('token')
+    return Promise.resolve({ msg: 'Logged out' })
+}
+
 const UserApi = {
     signInWithFacebook,
     signInWithGoogle,
     getUser,
+    logout,
 }
 
 export default UserApi
