@@ -20,7 +20,7 @@ import { Button } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     button: {
-        height: 45,
+        minHeight: 45,
         width: 'calc(100% - 20px)',
         padding: 10,
 
