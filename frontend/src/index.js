@@ -4,21 +4,25 @@ import ReactDOM from 'react-dom'
 import * as serviceWorker from 'serviceWorker'
 
 // APIs & utils
+import { AuthProvider } from 'components/auth/AuthContext'
 
 // Screens
 
 // Components
+import ReactGA from 'react-ga'
 import App from 'App'
 
 // Styles
 import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'components/alerts/AlertTemplate'
 import 'index.css'
 
 const theme = createMuiTheme({
     palette: {
         background: {
-            header: '#3BD4AE',
+            header: '#401f3e',
             footer: '#3BD4AE',
             paper: '#e5ddd8',
             default: '#fff',
@@ -28,12 +32,11 @@ const theme = createMuiTheme({
             main: '#78798c', // Blue
         },
         secondary: {
-            // light: '#e3f2fd', // Light blue
             main: '#e14d4d', // Red
         },
         text: {
-            primary: '#fff', // White
-            secondary: '#000', // Black
+            primary: '#000', // White
+            secondary: '#fff', // Black
             disabled: 'rgb(128,128,128)', // Grey
             error: '#e14d4d', // Red
         },
@@ -44,10 +47,31 @@ const theme = createMuiTheme({
     },
 })
 
+// Initialize google analytics page view tracking
+// ReactGA.initialize(config.GA_TRACKING_ID, {
+//     // debug: true,
+//     gaOptions: {
+//         sampleRate: 100,
+//         siteSpeedSampleRate: 30,
+//         cookieDomain: 'none',
+//     },
+// })
+
+// React Alerts render options
+const alert_options = {
+    position: positions.TOP_CENTER,
+    timeout: 5000,
+    transition: transitions.FADE,
+}
+
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <React.StrictMode>
-            <App />
+            <AlertProvider template={AlertTemplate} {...alert_options}>
+                <AuthProvider>
+                    <App />
+                </AuthProvider>
+            </AlertProvider>
         </React.StrictMode>
     </ThemeProvider>,
 

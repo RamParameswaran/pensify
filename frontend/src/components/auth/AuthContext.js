@@ -49,15 +49,17 @@ const AuthProvider = (props) => {
                     setState({ ...state, ...res })
                 })
                 .catch((err) => {
-                    setState({
-                        ...state,
-                        _id: null,
-                        email: null,
-                        name: null,
-                        firstName: null,
-                        lastName: null,
-                        profilePicUrl: null,
-                    })
+                    if (err.status == 401 && state._id) {
+                        setState({
+                            ...state,
+                            _id: null,
+                            email: null,
+                            name: null,
+                            firstName: null,
+                            lastName: null,
+                            profilePicUrl: null,
+                        })
+                    }
                 })
         }, 15000)
 
