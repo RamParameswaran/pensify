@@ -8,7 +8,6 @@ const swaggerUi = require('swagger-ui-express')
 // const swaggerDocument = require('./swagger.json')
 const swaggerJsdoc = require('swagger-jsdoc')
 
-const productRoutes = require('./routes/products')
 const userRoutes = require('./routes/user')
 
 mongoose.connect(
