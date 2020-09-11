@@ -103,6 +103,7 @@ export default function Home(props) {
                         .sort((a, b) => a.order - b.order)
                     return (
                         <Heading
+                            key={heading.id}
                             heading={heading}
                             notes={note_array}
                             onDropNoteCallback={onDropNoteCallback}
