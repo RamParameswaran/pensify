@@ -60,20 +60,35 @@ export default function Home(props) {
         :return:
             - null
      */
-    const reorderNotes = (drag_NoteIndex, hover_NoteIndex) => {
-        const draggedNote = notes.find((note) => note.id === drag_NoteIndex)
-        const hoveredNote = notes.find((note) => note.id === hover_NoteIndex)
+    const onReorder = (drag_index, hover_index, type) => {
+        let items
+        let setItems
+        switch (type) {
+            case 'note':
+                items = notes
+                setItems = setNotes
+                break
+            case 'heading':
+                items = headings
+                setItems = setHeadings
+                break
+            default:
+                return
+        }
 
-        const hoveredNote_order = hoveredNote.order
-        var new_notes = notes
+        const draggedItem = items.find((item) => item.id === drag_index)
+        const hoveredItem = items.find((item) => item.id === hover_index)
 
-        new_notes
-            .filter((note) => note.order >= hoveredNote_order)
-            .map((note) => (note.order = note.order + 1))
-        new_notes.find(
-            (note) => note.id === draggedNote.id
-        ).order = hoveredNote_order
-        setNotes(new_notes)
+        const hoveredItem_order = hoveredItem.order
+        var new_items = items
+
+        new_items
+            .filter((item) => item.order >= hoveredItem_order)
+            .map((item) => (item.order = item.order + 1))
+        new_items.find(
+            (item) => item.id === draggedItem.id
+        ).order = hoveredItem_order
+        setItems(new_items)
     }
 
     return (
@@ -87,7 +102,7 @@ export default function Home(props) {
                         heading={heading}
                         notes={note_array}
                         onDropNoteCallback={onDropNoteCallback}
-                        reorderNotes={reorderNotes}
+                        onReorder={onReorder}
                     />
                 )
             })}

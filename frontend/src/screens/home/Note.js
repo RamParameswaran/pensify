@@ -16,7 +16,7 @@ import ItemTypes from 'components/dnd/ItemTypes'
 // import { Card, Typography } from '@material-ui/core'
 
 const Note = (props) => {
-    const { note, reorderNotes } = props
+    const { note, onReorder } = props
 
     const ref = useRef(null)
 
@@ -66,7 +66,7 @@ const Note = (props) => {
                 return
             }
 
-            reorderNotes(drag_NoteIndex, hover_NoteIndex)
+            onReorder(drag_NoteIndex, hover_NoteIndex, ItemTypes.NOTE)
         },
     })
 

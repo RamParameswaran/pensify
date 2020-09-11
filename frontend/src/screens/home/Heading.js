@@ -4,7 +4,7 @@ import React, { Fragment, useRef } from 'react'
 // import { Link, withRouter } from "react-router-dom";
 
 // APIs & utils
-import { useDrop } from 'react-dnd'
+import { useDrag, useDrop } from 'react-dnd'
 import ItemTypes from 'components/dnd/ItemTypes'
 
 // Screens
@@ -25,20 +25,45 @@ export default function Heading(props) {
     const classes = useStyles()
     const ref = useRef(null)
 
-    const { heading, notes, onDropNoteCallback, reorderNotes } = props
+    const { heading, notes, onDropNoteCallback, onReorder } = props
+
+    // `useDrag` hook defines drag behaviour of Headings
+    const [{ isDragging }, drag] = useDrag({
+        item: { type: ItemTypes.HEADING, id: heading.id },
+        collect: (monitor) => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    })
 
     const [{ isOver }, drop] = useDrop({
-        accept: ItemTypes.NOTE,
-        drop: (item, monitor) => onDropNoteCallback(item, monitor, heading),
+        accept: [ItemTypes.NOTE, ItemTypes.HEADING],
+        drop: (item, monitor) => {
+            switch (item.type) {
+                case 'note':
+                    onDropNoteCallback(item, monitor, heading)
+                    break
+                case 'heading':
+                    break
+                default:
+                    break
+            }
+        },
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         }),
     })
 
-    drop(ref)
+    drag(drop(ref))
 
     return (
-        <Card ref={ref} raised key={heading.id}>
+        <Card
+            ref={ref}
+            raised
+            key={heading.id}
+            style={{
+                opacity: isDragging ? 0.1 : 1,
+            }}
+        >
             <div
                 className={isOver && classes.opacityOverlay}
                 style={{ height: '100%' }}
@@ -47,11 +72,7 @@ export default function Heading(props) {
                     {heading.title}
                 </Typography>
                 {notes.map((note, idx) => (
-                    <Note
-                        key={note.id}
-                        note={note}
-                        reorderNotes={reorderNotes}
-                    />
+                    <Note key={note.id} note={note} onReorder={onReorder} />
                 ))}
             </div>
         </Card>
