@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 // Screens
 
 // Components
+import Grid from 'components/grid/Grid'
 import Heading from './Heading'
 import initialData from 'initialData'
 
@@ -53,14 +54,20 @@ export default function Home(props) {
         })
     }
 
-    return headings.map((heading) => {
-        var note_array = notes.filter((note) => note.heading === heading.id)
-        return (
-            <Heading
-                heading={heading}
-                notes={note_array}
-                onDropCallback={onDropCallback}
-            />
-        )
-    })
+    return (
+        <Grid>
+            {headings.map((heading) => {
+                var note_array = notes.filter(
+                    (note) => note.heading === heading.id
+                )
+                return (
+                    <Heading
+                        heading={heading}
+                        notes={note_array}
+                        onDropCallback={onDropCallback}
+                    />
+                )
+            })}
+        </Grid>
+    )
 }
