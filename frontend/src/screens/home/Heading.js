@@ -25,11 +25,11 @@ export default function Heading(props) {
     const classes = useStyles()
     const ref = useRef(null)
 
-    const { heading, notes, onDropCallback } = props
+    const { heading, notes, onDropNoteCallback, reorderNotes } = props
 
     const [{ isOver }, drop] = useDrop({
         accept: ItemTypes.NOTE,
-        drop: (item, monitor) => onDropCallback(item, monitor, heading),
+        drop: (item, monitor) => onDropNoteCallback(item, monitor, heading),
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         }),
@@ -48,7 +48,7 @@ export default function Heading(props) {
                 {heading.title}
             </Typography>
             {notes.map((note, idx) => (
-                <Note key={note.id} note={note} index={idx} />
+                <Note key={note.id} note={note} reorderNotes={reorderNotes} />
             ))}
         </Card>
     )

@@ -42,10 +42,9 @@ export default function Home(props) {
         :return:
             - null
     */
-    const onDropCallback = (item, monitor, heading) => {
+    const onDropNoteCallback = (item, monitor, heading) => {
         var note_updated = notes.find((note) => note.id === item.id)
         note_updated.heading = heading.id
-
         setNotes((prevState) => {
             const newNotes = prevState
                 .filter((note) => note.id !== item.id)
@@ -54,17 +53,41 @@ export default function Home(props) {
         })
     }
 
+    /* function: `reorderNotes`
+        Called when a note is hovered over another note. Updates the note.order property
+        by making draggedNote.order = hoveredNote.order + 1
+
+        :return:
+            - null
+     */
+    const reorderNotes = (drag_NoteIndex, hover_NoteIndex) => {
+        const draggedNote = notes.find((note) => note.id === drag_NoteIndex)
+        const hoveredNote = notes.find((note) => note.id === hover_NoteIndex)
+
+        const hoveredNote_order = hoveredNote.order
+        var new_notes = notes
+
+        new_notes
+            .filter((note) => note.order >= hoveredNote_order)
+            .map((note) => (note.order = note.order + 1))
+        new_notes.find(
+            (note) => note.id === draggedNote.id
+        ).order = hoveredNote_order
+        setNotes(new_notes)
+    }
+
     return (
         <Grid>
             {headings.map((heading) => {
-                var note_array = notes.filter(
-                    (note) => note.heading === heading.id
-                )
+                var note_array = notes
+                    .filter((note) => note.heading === heading.id)
+                    .sort((a, b) => a.order - b.order)
                 return (
                     <Heading
                         heading={heading}
                         notes={note_array}
-                        onDropCallback={onDropCallback}
+                        onDropNoteCallback={onDropNoteCallback}
+                        reorderNotes={reorderNotes}
                     />
                 )
             })}
