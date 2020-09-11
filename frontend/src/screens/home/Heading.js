@@ -18,7 +18,7 @@ import { Card, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {},
-    isOver: { backgroundColor: 'red' },
+    opacityOverlay: { backgroundColor: 'rgba(0,0,0,0.05)' },
 }))
 
 export default function Heading(props) {
@@ -38,18 +38,22 @@ export default function Heading(props) {
     drop(ref)
 
     return (
-        <Card
-            ref={ref}
-            raised
-            key={heading.id}
-            className={isOver && classes.isOver}
-        >
-            <Typography variant="h5" gutterBottom>
-                {heading.title}
-            </Typography>
-            {notes.map((note, idx) => (
-                <Note key={note.id} note={note} reorderNotes={reorderNotes} />
-            ))}
+        <Card ref={ref} raised key={heading.id}>
+            <div
+                className={isOver && classes.opacityOverlay}
+                style={{ height: '100%' }}
+            >
+                <Typography variant="h5" gutterBottom>
+                    {heading.title}
+                </Typography>
+                {notes.map((note, idx) => (
+                    <Note
+                        key={note.id}
+                        note={note}
+                        reorderNotes={reorderNotes}
+                    />
+                ))}
+            </div>
         </Card>
     )
 }

@@ -12,8 +12,8 @@ import ItemTypes from 'components/dnd/ItemTypes'
 // Components
 
 // Styles
-import { makeStyles } from '@material-ui/core/styles'
-import { Card, Typography } from '@material-ui/core'
+// import { makeStyles } from '@material-ui/core/styles'
+// import { Card, Typography } from '@material-ui/core'
 
 const Note = (props) => {
     const { note, reorderNotes } = props
@@ -30,8 +30,11 @@ const Note = (props) => {
 
     // `useDrop` hook defines drop behaviour of Note (used
     // for sorting within a Heading)
-    const [, drop] = useDrop({
+    const [{ isOver }, drop] = useDrop({
         accept: ItemTypes.NOTE,
+        collect: (monitor) => ({
+            isOver: !!monitor.isOver(),
+        }),
         hover(dragged, monitor) {
             if (!ref.current) {
                 return
@@ -63,10 +66,7 @@ const Note = (props) => {
                 return
             }
 
-            console.log(drag_NoteIndex, hover_NoteIndex)
-
             reorderNotes(drag_NoteIndex, hover_NoteIndex)
-            // item.index = hoverIndex
         },
     })
 
@@ -74,7 +74,13 @@ const Note = (props) => {
 
     return (
         <Fragment>
-            <div ref={ref} style={{ opacity: isDragging ? 0.1 : 1 }}>
+            <div
+                ref={ref}
+                style={{
+                    opacity: isDragging ? 0.1 : 1,
+                    borderTop: isOver ? 'solid 1px yellow' : 'solid 0px black',
+                }}
+            >
                 <p>{note.content}</p>
             </div>
         </Fragment>
