@@ -13,7 +13,7 @@ import ItemTypes from 'components/dnd/ItemTypes'
 
 // Styles
 // import { makeStyles } from '@material-ui/core/styles'
-// import { Card, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 
 const Note = (props) => {
     const { note, onReorder } = props
@@ -75,7 +75,9 @@ const Note = (props) => {
                     borderTop: isOver ? 'solid 1px yellow' : 'solid 0px black',
                 }}
             >
-                <p>{note.content}</p>
+                <Typography variant="body1" gutterBottom>
+                    {note.content}
+                </Typography>
             </div>
         </Fragment>
     )

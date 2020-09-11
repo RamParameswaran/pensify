@@ -18,6 +18,7 @@ import { Card, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {},
+    card: { padding: 10 },
     opacityOverlay: { backgroundColor: 'rgba(0,0,0,0.05)' },
 }))
 
@@ -42,8 +43,6 @@ export default function Heading(props) {
                 case 'note':
                     onDropNoteCallback(item, monitor, heading)
                     break
-                case 'heading':
-                    onDropNoteCallback(item, monitor, heading)
                 default:
                     break
             }
@@ -64,15 +63,15 @@ export default function Heading(props) {
             }
 
             const hoveredRect = ref.current.getBoundingClientRect()
-            const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2
+            const hoverMiddleX = (hoveredRect.left - hoveredRect.right) / 2
             const mousePosition = monitor.getClientOffset()
-            const hoverClientY = mousePosition.y - hoveredRect.top
+            const hoverClientX = mousePosition.y - hoveredRect.right
 
-            if (drag_index < hover_index && hoverClientY < hoverMiddleY) {
+            if (drag_index < hover_index && hoverClientX < hoverMiddleX) {
                 return
             }
 
-            if (drag_index > hover_index && hoverClientY > hoverMiddleY) {
+            if (drag_index > hover_index && hoverClientX > hoverMiddleX) {
                 return
             }
 
@@ -91,14 +90,13 @@ export default function Heading(props) {
                 opacity: isDragging ? 0.1 : 1,
                 borderLeft: isOver ? 'solid 1px yellow' : 'solid 0px black',
             }}
+            className={classes.card}
         >
             <div
                 className={isOver ? classes.opacityOverlay : ''}
                 style={{ height: '100%' }}
             >
-                <Typography variant="h5" gutterBottom>
-                    {heading.title}
-                </Typography>
+                <Typography variant="h6">{heading.title}</Typography>
                 {notes.map((note, idx) => (
                     <Note key={note.id} note={note} onReorder={onReorder} />
                 ))}
