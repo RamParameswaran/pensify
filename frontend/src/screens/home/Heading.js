@@ -43,7 +43,7 @@ export default function Heading(props) {
                     onDropNoteCallback(item, monitor, heading)
                     break
                 case 'heading':
-                    break
+                    onDropNoteCallback(item, monitor, heading)
                 default:
                     break
             }
@@ -51,6 +51,33 @@ export default function Heading(props) {
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         }),
+        hover(dragged, monitor) {
+            if (!ref.current) {
+                return
+            }
+
+            const drag_index = dragged.id
+            const hover_index = heading.id
+
+            if (drag_index === hover_index) {
+                return
+            }
+
+            const hoveredRect = ref.current.getBoundingClientRect()
+            const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2
+            const mousePosition = monitor.getClientOffset()
+            const hoverClientY = mousePosition.y - hoveredRect.top
+
+            if (drag_index < hover_index && hoverClientY < hoverMiddleY) {
+                return
+            }
+
+            if (drag_index > hover_index && hoverClientY > hoverMiddleY) {
+                return
+            }
+
+            onReorder(drag_index, hover_index, ItemTypes.HEADING)
+        },
     })
 
     drag(drop(ref))
@@ -62,10 +89,11 @@ export default function Heading(props) {
             key={heading.id}
             style={{
                 opacity: isDragging ? 0.1 : 1,
+                borderLeft: isOver ? 'solid 1px yellow' : 'solid 0px black',
             }}
         >
             <div
-                className={isOver && classes.opacityOverlay}
+                className={isOver ? classes.opacityOverlay : ''}
                 style={{ height: '100%' }}
             >
                 <Typography variant="h5" gutterBottom>

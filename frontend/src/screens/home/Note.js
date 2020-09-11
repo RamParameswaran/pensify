@@ -40,10 +40,10 @@ const Note = (props) => {
                 return
             }
 
-            const drag_NoteIndex = dragged.id
-            const hover_NoteIndex = note.id
+            const drag_index = dragged.id
+            const hover_index = note.id
 
-            if (drag_NoteIndex === hover_NoteIndex) {
+            if (drag_index === hover_index) {
                 return
             }
 
@@ -52,21 +52,15 @@ const Note = (props) => {
             const mousePosition = monitor.getClientOffset()
             const hoverClientY = mousePosition.y - hoveredRect.top
 
-            if (
-                drag_NoteIndex < hover_NoteIndex &&
-                hoverClientY < hoverMiddleY
-            ) {
+            if (drag_index < hover_index && hoverClientY < hoverMiddleY) {
                 return
             }
 
-            if (
-                drag_NoteIndex > hover_NoteIndex &&
-                hoverClientY > hoverMiddleY
-            ) {
+            if (drag_index > hover_index && hoverClientY > hoverMiddleY) {
                 return
             }
 
-            onReorder(drag_NoteIndex, hover_NoteIndex, ItemTypes.NOTE)
+            onReorder(drag_index, hover_index, ItemTypes.NOTE)
         },
     })
 

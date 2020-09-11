@@ -76,36 +76,40 @@ export default function Home(props) {
                 return
         }
 
-        const draggedItem = items.find((item) => item.id === drag_index)
-        const hoveredItem = items.find((item) => item.id === hover_index)
+        var new_items = items
+
+        const draggedItem = new_items.find((item) => item.id === drag_index)
+        const hoveredItem = new_items.find((item) => item.id === hover_index)
+
+        if (!draggedItem) return
+        if (!hoveredItem) return
 
         const hoveredItem_order = hoveredItem.order
-        var new_items = items
 
         new_items
             .filter((item) => item.order >= hoveredItem_order)
             .map((item) => (item.order = item.order + 1))
-        new_items.find(
-            (item) => item.id === draggedItem.id
-        ).order = hoveredItem_order
+        draggedItem.order = hoveredItem_order
         setItems(new_items)
     }
 
     return (
         <Grid>
-            {headings.map((heading) => {
-                var note_array = notes
-                    .filter((note) => note.heading === heading.id)
-                    .sort((a, b) => a.order - b.order)
-                return (
-                    <Heading
-                        heading={heading}
-                        notes={note_array}
-                        onDropNoteCallback={onDropNoteCallback}
-                        onReorder={onReorder}
-                    />
-                )
-            })}
+            {headings
+                .sort((a, b) => a.order - b.order)
+                .map((heading) => {
+                    var note_array = notes
+                        .filter((note) => note.heading === heading.id)
+                        .sort((a, b) => a.order - b.order)
+                    return (
+                        <Heading
+                            heading={heading}
+                            notes={note_array}
+                            onDropNoteCallback={onDropNoteCallback}
+                            onReorder={onReorder}
+                        />
+                    )
+                })}
         </Grid>
     )
 }
