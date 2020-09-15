@@ -4,8 +4,7 @@ import React, { Fragment, useRef } from 'react'
 // import { Link, withRouter } from "react-router-dom";
 
 // APIs & utils
-import { useDrag, useDrop } from 'react-dnd'
-import ItemTypes from 'components/dnd/ItemTypes'
+import { Draggable } from 'react-beautiful-dnd'
 
 // Screens
 
@@ -30,17 +29,20 @@ const Note = (props) => {
     const { note, index } = props
 
     return (
+        <Draggable draggableId={`${note.id}`} index={index}>
+            {(provided) => (
                 <div
                     className={classes.note}
-            style={{
-                opacity: isDragging ? 0.1 : 1,
-                borderTop: isOver ? 'solid 1px yellow' : 'solid 0px black',
-            }}
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
                 >
                     <Typography variant="body1" gutterBottom>
                         {note.content}
                     </Typography>
                 </div>
+            )}
+        </Draggable>
     )
 }
 

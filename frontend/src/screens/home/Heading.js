@@ -4,8 +4,7 @@ import React, { Fragment, useRef } from 'react'
 // import { Link, withRouter } from "react-router-dom";
 
 // APIs & utils
-import { useDrag, useDrop } from 'react-dnd'
-import ItemTypes from 'components/dnd/ItemTypes'
+import { Droppable } from 'react-beautiful-dnd'
 
 // Screens
 
@@ -30,25 +29,17 @@ export default function Heading(props) {
 
     return (
         <Card ref={ref} raised key={heading.id} className={classes.card}>
-        <Card
-            ref={ref}
-            raised
-            key={heading.id}
-            style={{
-                opacity: isDragging ? 0.1 : 1,
-                borderLeft: isOver ? 'solid 1px yellow' : 'solid 0px black',
-            }}
-            className={classes.card}
-        >
-            <div
-                className={isOver ? classes.opacityOverlay : ''}
-                style={{ height: '100%' }}
-            >
+            <Droppable droppableId={`${heading.id}`}>
+                {(provided) => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
                         <Typography variant="h6">{heading.title}</Typography>
                         {notes.map((note, index) => (
                             <Note key={note.id} note={note} index={index} />
                         ))}
+                        {provided.placeholder}
                     </div>
+                )}
+            </Droppable>
         </Card>
     )
 }

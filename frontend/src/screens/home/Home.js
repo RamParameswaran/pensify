@@ -10,6 +10,7 @@ import React, { useState } from 'react'
 import Grid from 'components/grid/Grid'
 import Heading from './Heading'
 import initialData from 'initialData'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles'
@@ -93,8 +94,23 @@ export default function Home(props) {
         setItems(new_items)
     }
 
+    /* function: `onDragEnd`
+        A required input for the 'react-beautiful-dnd' DragDropContext
+
+        :return:
+            - TODO
+     */
+    const onDragEnd = (result) => {
+        return
+    }
+
     return (
         <Grid>
+            <DragDropContext
+                // onDragStart // optional
+                // onDragUpdate // optional
+                onDragEnd={onDragEnd} // required
+            >
                 {headings
                     // .sort((a, b) => a.order - b.order)
                     .map((heading) => {
@@ -109,6 +125,7 @@ export default function Home(props) {
                             />
                         )
                     })}
+            </DragDropContext>
         </Grid>
     )
 }
