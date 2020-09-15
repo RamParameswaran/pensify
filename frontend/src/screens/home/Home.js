@@ -32,76 +32,87 @@ export default function Home(props) {
     const [headings, setHeadings] = useState(initialData.headings)
     const [notes, setNotes] = useState(initialData.notes)
 
-    /* function: `onDropCallback`
-        Called when a 'note' is dropped into a 'heading' object. Updates the field note.heading
+    /* function: `onDropNote`
+        Drops a `note` object (draggable, source) into a 'heading' object (destination). Updates the 
+        `note.heading` and reorders all notes in the destination heading. 
 
         :inputs:
-            - item: {type: '', id: int } --> the item being dragged
-            - monitor: obj --> the react-dnd monitor object
-            - heading: obj --> the `heading` which the item is being dropped into
+            - note: note object
+            - destination_heading: obj {droppableId: str , index: int}
     
         :return:
             - null
     */
-    const onDropNoteCallback = (item, monitor, heading) => {
-        var note_updated = notes.find((note) => note.id === item.id)
-        note_updated.heading = heading.id
-        setNotes((prevState) => {
-            const newNotes = prevState
-                .filter((note) => note.id !== item.id)
-                .concat({ ...note_updated })
-            return [...newNotes]
+    const onDropNote = (draggableId, source, destination) => {
+        const note_obj = notes.find((item) => String(item.id) == draggableId)
+        const heading_obj = headings.find(
+            (item) => String(item.id) == destination.droppableId
+        )
+
+        // Create a new array `notes_list` to avoid mutating the state array `notes`
+        // Remove the dragged note item from this array
+        const notes_list = Array.from(notes).filter(
+            (item) => item.id !== note_obj.id
+        )
+
+        // Split `notes_list` into two groups:
+        // i) `destination_notes`: notes in the destination heading (which we'll have to insert the dragged note)
+        // ii) `other_notes`: everything else (for which no action is required)
+        const destination_notes = notes_list.filter(
+            (item) => item.heading === heading_obj.id
+        )
+        const other_notes = notes_list.filter(
+            (item) => item.heading !== heading_obj.id
+        )
+
+        // Splice the new (updated) note into correct position
+        destination_notes.splice(destination.index, 0, {
+            ...note_obj,
+            heading: heading_obj.id,
         })
-    }
 
-    /* function: `reorderNotes`
-        Called when a note is hovered over another note. Updates the note.order property
-        by making draggedNote.order = hoveredNote.order + 1
-
-        :return:
-            - null
-     */
-    const onReorder = (drag_index, hover_index, type) => {
-        let items
-        let setItems
-        switch (type) {
-            case 'note':
-                items = notes
-                setItems = setNotes
-                break
-            case 'heading':
-                items = headings
-                setItems = setHeadings
-                break
-            default:
-                return
+        // Reassign `note.order` by starting at 0 and iterating through all `destination_notes`
+        for (var i = 0; i < destination_notes.length; i++) {
+            destination_notes[i].order = i
         }
 
-        var new_items = items
-
-        const draggedItem = new_items.find((item) => item.id === drag_index)
-        const hoveredItem = new_items.find((item) => item.id === hover_index)
-
-        if (!draggedItem) return
-        if (!hoveredItem) return
-
-        const hoveredItem_order = hoveredItem.order
-
-        new_items
-            .filter((item) => item.order >= hoveredItem_order)
-            .map((item) => (item.order = item.order + 1))
-        draggedItem.order = hoveredItem_order
-        setItems(new_items)
+        // set state to include `new_destination_notes` and all `other_notes` (minus dragged note)
+        setNotes([...destination_notes, ...other_notes])
     }
 
     /* function: `onDragEnd`
         A required input for the 'react-beautiful-dnd' DragDropContext
 
+        :input:
+            - `result` (obj) 
+                {   draggableId: str , 
+                    type: str ,
+                    reason: str ,
+                    source: {droppableId: str , index: int} ,
+                    destination: {droppableId: str , index: int},
+                }
+
         :return:
-            - TODO
+            - null
      */
     const onDragEnd = (result) => {
-        return
+        const { destination, source, draggableId } = result
+
+        // If no destination ==> no action
+        if (!destination) {
+            return
+        }
+
+        // If object is returned to original position ==> no action
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return
+        }
+
+        // Otherwise, peform move/reorder
+        onDropNote(draggableId, source, destination)
     }
 
     return (
@@ -112,7 +123,7 @@ export default function Home(props) {
                 onDragEnd={onDragEnd} // required
             >
                 {headings
-                    // .sort((a, b) => a.order - b.order)
+                    .sort((a, b) => a.order - b.order)
                     .map((heading) => {
                         var note_array = notes
                             .filter((note) => note.heading === heading.id)
