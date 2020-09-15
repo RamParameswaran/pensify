@@ -95,22 +95,20 @@ export default function Home(props) {
 
     return (
         <Grid>
-            {headings
-                .sort((a, b) => a.order - b.order)
-                .map((heading) => {
-                    var note_array = notes
-                        .filter((note) => note.heading === heading.id)
-                        .sort((a, b) => a.order - b.order)
-                    return (
-                        <Heading
-                            key={heading.id}
-                            heading={heading}
-                            notes={note_array}
-                            onDropNoteCallback={onDropNoteCallback}
-                            onReorder={onReorder}
-                        />
-                    )
-                })}
+                {headings
+                    // .sort((a, b) => a.order - b.order)
+                    .map((heading) => {
+                        var note_array = notes
+                            .filter((note) => note.heading === heading.id)
+                            .sort((a, b) => a.order - b.order)
+                        return (
+                            <Heading
+                                key={heading.id}
+                                heading={heading}
+                                notes={note_array}
+                            />
+                        )
+                    })}
         </Grid>
     )
 }
