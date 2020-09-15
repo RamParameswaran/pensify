@@ -12,10 +12,21 @@ import ItemTypes from 'components/dnd/ItemTypes'
 // Components
 
 // Styles
-// import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 
+const useStyles = makeStyles((theme) => ({
+    root: {},
+    note: {
+        padding: 5,
+        marginBottom: 5,
+        borderRadius: 3,
+        backgroundColor: theme.palette.common.white,
+    },
+}))
+
 const Note = (props) => {
+    const classes = useStyles()
     const { note, onReorder } = props
 
     const ref = useRef(null)
@@ -67,19 +78,18 @@ const Note = (props) => {
     drop(drag(ref))
 
     return (
-        <Fragment>
-            <div
-                ref={ref}
-                style={{
-                    opacity: isDragging ? 0.1 : 1,
-                    borderTop: isOver ? 'solid 1px yellow' : 'solid 0px black',
-                }}
-            >
-                <Typography variant="body1" gutterBottom>
-                    {note.content}
-                </Typography>
-            </div>
-        </Fragment>
+        <div
+            ref={ref}
+            className={classes.note}
+            style={{
+                opacity: isDragging ? 0.1 : 1,
+                borderTop: isOver ? 'solid 1px yellow' : 'solid 0px black',
+            }}
+        >
+            <Typography variant="body1" gutterBottom>
+                {note.content}
+            </Typography>
+        </div>
     )
 }
 
