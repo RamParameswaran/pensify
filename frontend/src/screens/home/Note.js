@@ -21,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 5,
         borderRadius: 3,
         backgroundColor: theme.palette.common.white,
+        transition: 'background-color 0.2s ease',
+    },
+    isDragging: {
+        backgroundColor: theme.palette.background.paper,
     },
 }))
 
@@ -30,12 +34,15 @@ const Note = (props) => {
 
     return (
         <Draggable draggableId={`${note.id}`} index={index}>
-            {(provided) => (
+            {(provided, snapshot) => (
                 <div
                     className={classes.note}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    className={`${classes.note} ${
+                        snapshot.isDragging && classes.isDragging
+                    }`}
                 >
                     <Typography variant="body1" gutterBottom>
                         {note.content}

@@ -17,8 +17,8 @@ import { Card, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {},
-    card: { padding: 10 },
-    opacityOverlay: { backgroundColor: 'rgba(0,0,0,0.05)' },
+    card: { padding: 10, transition: 'background-color 0.2s ease' },
+    isDraggingOver: { backgroundColor: 'rgba(0,0,0,0.1)' },
 }))
 
 export default function Heading(props) {
@@ -28,22 +28,26 @@ export default function Heading(props) {
     const { heading, notes } = props
 
     return (
-        <Card ref={ref} raised key={heading.id} className={classes.card}>
-            <Droppable droppableId={`${heading.id}`}>
-                {(provided) => (
-                    <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        style={{ height: '100%' }}
-                    >
+        <Droppable droppableId={`${heading.id}`}>
+            {(provided, snapshot) => (
+                <Card
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    raised
+                    key={heading.id}
+                    className={`${classes.card} ${
+                        snapshot.isDraggingOver && classes.isDraggingOver
+                    }`}
+                >
+                    <div style={{ height: '100%' }}>
                         <Typography variant="h6">{heading.title}</Typography>
                         {notes.map((note, index) => (
                             <Note key={note.id} note={note} index={index} />
                         ))}
                         {provided.placeholder}
                     </div>
-                )}
-            </Droppable>
-        </Card>
+                </Card>
+            )}
+        </Droppable>
     )
 }
