@@ -31,7 +31,11 @@ export default function Heading(props) {
         <Card ref={ref} raised key={heading.id} className={classes.card}>
             <Droppable droppableId={`${heading.id}`}>
                 {(provided) => (
-                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        style={{ height: '100%' }}
+                    >
                         <Typography variant="h6">{heading.title}</Typography>
                         {notes.map((note, index) => (
                             <Note key={note.id} note={note} index={index} />
