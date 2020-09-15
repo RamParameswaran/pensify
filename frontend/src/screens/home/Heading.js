@@ -27,6 +27,23 @@ export default function Heading(props) {
 
     const { heading, notes } = props
 
+    // Use React.memo so that all notes aren't re-rendered whenever a drag occurs
+    // n.b. - we call setNotes in "Note.js" to reorder the notes, so the necessary
+    // re-renders will occur at that point. Hence we can ignore the re-renders here.
+    const NotesList = React.memo(
+        ({ heading, notes }) => {
+            return (
+                <Fragment>
+                    <Typography variant="h6">{heading.title}</Typography>
+                    {notes.map((note, index) => (
+                        <Note key={note.id} note={note} index={index} />
+                    ))}
+                </Fragment>
+            )
+        },
+        (prevProps, nextProps) => true // always take previous NotesList memo
+    )
+
     return (
         <Droppable droppableId={`${heading.id}`}>
             {(provided, snapshot) => (
@@ -40,10 +57,7 @@ export default function Heading(props) {
                     }`}
                 >
                     <div style={{ height: '100%' }}>
-                        <Typography variant="h6">{heading.title}</Typography>
-                        {notes.map((note, index) => (
-                            <Note key={note.id} note={note} index={index} />
-                        ))}
+                        <NotesList notes={notes} heading={heading} />
                         {provided.placeholder}
                     </div>
                 </Card>
