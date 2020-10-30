@@ -12,6 +12,8 @@ import Home from 'screens/home/Home'
 
 // Components
 import Header from 'components/header/Header'
+import { DndProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles'
@@ -37,7 +39,10 @@ function App() {
     return (
         <BrowserRouter>
             <Header />
-            <Home />
+
+            <DndProvider backend={HTML5Backend}>
+                <Home />
+            </DndProvider>
         </BrowserRouter>
     )
 }
