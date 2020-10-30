@@ -6,6 +6,7 @@
     "description": "Pensify Note Taking Application",
     "private": true,
     "dependencies": {
+        "@apollo/client": "^3.2.5",
         "@material-ui/core": "^4.9.7",
         "@material-ui/icons": "^4.9.1",
         "@testing-library/jest-dom": "^4.2.4",
@@ -13,6 +14,8 @@
         "@testing-library/user-event": "^7.2.1",
         "axios": "^0.19.2",
         "classnames": "^2.2.6",
+        "graphql": "^15.4.0",
+        "graphql-tag": "^2.11.0",
         "react": "^16.13.1",
         "react-alert": "^7.0.0",
         "react-alert-template-basic": "^1.0.0",

@@ -1,5 +1,11 @@
 import React from 'react'
 import * as Realm from 'realm-web'
+import {
+    ApolloProvider,
+    ApolloClient,
+    HttpLink,
+    InMemoryCache,
+} from '@apollo/client'
 import { BrowserRouter } from 'react-router-dom'
 
 // APIs & utils
@@ -25,6 +31,32 @@ const useStyles = makeStyles((theme) => ({}))
 
 const app = new Realm.App({ id: config.REALM_APP_ID })
 
+// Get a valid Realm user access token to authenticate requests
+async function getValidAccessToken() {
+    if (!app.currentUser) {
+        return null
+    }
+
+    // The logged in user's access token might be stale,
+    // Refreshing custom data also refreshes the access token
+    await app.currentUser.refreshCustomData()
+
+    // Get a valid access token for the current user
+    return app.currentUser.accessToken
+}
+
+const client = new ApolloClient({
+    link: new HttpLink({
+        uri: config.GRAPHQL_URL,
+        fetch: async (uri, options) => {
+            const accessToken = await getValidAccessToken()
+            options.headers.Authorization = `Bearer ${accessToken}`
+            return fetch(uri, options)
+        },
+    }),
+    cache: new InMemoryCache(),
+})
+
 function App() {
     const classes = useStyles()
 
@@ -36,9 +68,11 @@ function App() {
 
             {user ? (
                 // If user is authenticated - return Home screen
-                <DndProvider backend={HTML5Backend}>
-                    <Home />
-                </DndProvider>
+                <ApolloProvider client={client}>
+                    <DndProvider backend={HTML5Backend}>
+                        <Home />
+                    </DndProvider>
+                </ApolloProvider>
             ) : (
                 // If user is NOT authenticated - return Login screen
                 <Login />

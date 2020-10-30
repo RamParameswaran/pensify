@@ -2,6 +2,8 @@ var staging = true
 
 const config = {
     REALM_APP_ID: 'pensify-realm-ehpya',
+    GRAPHQL_URL:
+        'https://realm.mongodb.com/api/client/v2.0/app/pensify-realm-ehpya/graphql',
     API_BASE_URL: staging
         ? 'http://localhost:5000/api/v1'
         : 'https://example.com/api/v1',
