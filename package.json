@@ -1,16 +1,12 @@
 {
     "name": "Pensify",
-    "version": "0.0.1",
+    "version": "0.1.1",
     "description": "Pensify Note Taking Application",
     "main": "frontend/index.js",
     "scripts": {
         "test": "react-scripts test",
-        "start": "npm-run-all --parallel backend frontend",
-        "backend": "cd backend && npm run start",
-        "frontend": "cd frontend && npm run start",
-        "installFrontend": "cd frontend && npm install",
-        "installBackend": "cd backend && npm install",
-        "install-all": "npm run installFrontend && npm run installBackend"
+        "start": "cd frontend && npm run start",
+        "installFrontend": "cd frontend && npm install"
     },
     "author": "Ram Parameswaran",
     "license": "MIT",
