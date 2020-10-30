@@ -3,7 +3,6 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { withRouter, Link, NavLink } from 'react-router-dom'
 
 // APIs & utils
-import AuthApi from 'api/AuthApi'
 import useAuth from 'components/auth/useAuth'
 
 // Screens
@@ -14,15 +13,7 @@ import SearchWidget from './SearchWidget'
 import logo_placeholder from 'assets/logos/logo_placeholder.png'
 
 // Styles
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-} from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import CloseIcon from '@material-ui/icons/Close'
@@ -61,9 +52,7 @@ function Header(props) {
     }
     const handleLogout = () => {
         setAnchorEl(null)
-        AuthApi.logout().then((res) => {
-            clearUser()
-        })
+        // Add logout call here
     }
 
     return (

@@ -9,8 +9,8 @@ import { Link, Redirect } from 'react-router-dom'
 // Screens
 
 // Components
-import GoogleAuthBtn from 'components/auth/google/GoogleAuthBtn'
-import FacebookAuthBtn from 'components/auth/facebook/FacebookAuthBtn'
+// import GoogleAuthBtn from 'components/auth/google/GoogleAuthBtn'
+// import FacebookAuthBtn from 'components/auth/facebook/FacebookAuthBtn'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles'
@@ -61,10 +61,10 @@ export default function Login(props) {
                         style={{ textAlign: 'center', marginTop: 20 }}
                     >
                         <Grid item xs={12} style={{ marginBottom: 10 }}>
-                            <GoogleAuthBtn buttonText="Login with Google" />
+                            {/* <GoogleAuthBtn buttonText="Login with Google" /> */}
                         </Grid>
                         <Grid item xs={12} style={{ marginBottom: 10 }}>
-                            <FacebookAuthBtn buttonText="Login with Facebook" />
+                            {/* <FacebookAuthBtn buttonText="Login with Facebook" /> */}
                         </Grid>
                     </Grid>
                 </Grid>
