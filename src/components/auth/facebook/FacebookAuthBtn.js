@@ -1,10 +1,8 @@
 // Created: 26 June 2020
 
-import React, { Fragment, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React from 'react'
 
 // APIs & utils
-import AuthApi from 'api/AuthApi'
 import useAuth from 'components/auth/useAuth'
 
 // Screens
@@ -70,21 +68,11 @@ export default function FacebookAuthBtn(props) {
     const classes = useStyles()
     const alert = useAlert()
 
-    const { setUser } = useAuth()
+    const { loginWithFacebook } = useAuth()
 
     const responseFacebook = (response) => {
         if (response.accessToken) {
-            // Make backend login call using accessToken or other Facebook creds
-            AuthApi.signInWithFacebook(response.accessToken)
-                .then((res) => {
-                    localStorage.setItem('token', res.token)
-                    AuthApi.getUser().then((res) => {
-                        setUser(res)
-                    })
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            loginWithFacebook(response.accessToken)
         } else {
             handleLoginFailure(response)
         }
@@ -92,17 +80,12 @@ export default function FacebookAuthBtn(props) {
 
     const handleLoginFailure = (response) => {
         console.log(response)
-        // alert.error("Failed to log in");
+        alert.error('Failed to log in')
     }
-
-    // if (userId) {
-    //     return <Redirect to="/" />
-    // }
 
     return (
         <FacebookLogin
             appId="282429899774334"
-            // autoLoad={true}
             fields="name,email,picture"
             callback={responseFacebook}
             render={(renderProps) => (

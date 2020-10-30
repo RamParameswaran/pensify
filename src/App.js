@@ -1,7 +1,10 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import React from 'react'
+import * as Realm from 'realm-web'
+import { BrowserRouter } from 'react-router-dom'
 
 // APIs & utils
+import config from 'config'
+
 import useAuth from 'components/auth/useAuth'
 
 // Screens
@@ -20,29 +23,26 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({}))
 
+const app = new Realm.App({ id: config.REALM_APP_ID })
+
 function App() {
     const classes = useStyles()
 
     const { user } = useAuth()
 
-    // If not logged in:
-    if (!user._id) {
-        return (
-            <BrowserRouter>
-                <Header />
-                <Login />
-            </BrowserRouter>
-        )
-    }
-
-    // If user logged in
     return (
         <BrowserRouter>
             <Header />
 
-            <DndProvider backend={HTML5Backend}>
-                <Home />
-            </DndProvider>
+            {user ? (
+                // If user is authenticated - return Home screen
+                <DndProvider backend={HTML5Backend}>
+                    <Home />
+                </DndProvider>
+            ) : (
+                // If user is NOT authenticated - return Login screen
+                <Login />
+            )}
         </BrowserRouter>
     )
 }

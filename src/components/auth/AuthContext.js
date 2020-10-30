@@ -1,9 +1,10 @@
-// Created: 18 June 2020
+// Modified: 30 October 2020
 // This is a top-level context component. It performs several purposes:
 // 		i) it carries all state for the `user` object
 //		ii) it is the Context Provider for all child components which want to access/manipulate the `user` state
 
 import React, { useState, useEffect } from 'react'
+import * as Realm from 'realm-web'
 
 // APIs & utils
 import config from 'config'
@@ -16,28 +17,14 @@ import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
 
 const AuthContext = React.createContext([{}, () => {}])
 
+const app = Realm.App.getApp(config.REALM_APP_ID)
+
 const AuthProvider = (props) => {
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     // 2) Create the `player` object and define initial State values
-    var [state, setState] = useState({
-        _id: null,
-        email: null,
-        name: null,
-        firstName: null,
-        lastName: null,
-        profilePicUrl: null,
-    })
+    var [state, setState] = useState(app.currentUser)
     const alert = useAlert()
-
-    useEffect(() => {
-        // Show FullscreenSpinner while user object is verified (`getUser` method)
-        setLoading(true)
-
-        // Add "getCurrentUser" call here
-
-        setLoading(false)
-    }, [])
 
     return (
         <AuthContext.Provider value={[state, setState]}>
