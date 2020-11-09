@@ -1,31 +1,20 @@
 // Created: 15 May 2020
-import React, { Fragment, useState, useEffect } from 'react'
-import { withRouter, Link, NavLink } from 'react-router-dom'
+import React, { Fragment } from 'react'
+import { withRouter, Link } from 'react-router-dom'
 
 // APIs & utils
-import AuthApi from 'api/AuthApi'
 import useAuth from 'components/auth/useAuth'
 
 // Screens
 
 // Components
-import { useAlert } from 'react-alert'
 import SearchWidget from './SearchWidget'
 import logo_placeholder from 'assets/logos/logo_placeholder.png'
 
 // Styles
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-} from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@material-ui/core'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
-import CloseIcon from '@material-ui/icons/Close'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 function Header(props) {
     const classes = useStyles()
 
-    const { user, clearUser } = useAuth()
+    const { user, logout } = useAuth()
 
     // user Menu handling
     const [anchorEl, setAnchorEl] = React.useState(null)
@@ -61,9 +50,7 @@ function Header(props) {
     }
     const handleLogout = () => {
         setAnchorEl(null)
-        AuthApi.logout().then((res) => {
-            clearUser()
-        })
+        logout()
     }
 
     return (
@@ -79,7 +66,7 @@ function Header(props) {
                         />
                     </Link>
 
-                    {user._id && (
+                    {user && (
                         <Fragment>
                             <div style={{ flexGrow: 1 }}>
                                 <SearchWidget />

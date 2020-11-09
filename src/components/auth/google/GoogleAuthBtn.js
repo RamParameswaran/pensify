@@ -1,21 +1,23 @@
 // Created: 26 June 2020
 
-import React, { Fragment, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import React from 'react'
+import * as Realm from 'realm-web'
 
 // APIs & utils
-import AuthApi from 'api/AuthApi'
+import config from 'config'
 import useAuth from 'components/auth/useAuth'
 
 // Screens
 
 // Components
-import { GoogleLogin, GoogleLogout } from 'react-google-login'
+import { GoogleLogin } from 'react-google-login'
 import { useAlert } from 'react-alert'
 
 // Styles
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
+
+const app = Realm.App.getApp(config.REALM_APP_ID)
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -85,93 +87,34 @@ const GoogleButton = (props) => {
     )
 }
 
-const CLIENT_ID =
-    '602173608399-k0dq45qjc51j9l5l37kkahiv17fuh8t2.apps.googleusercontent.com'
-
 const GoogleAuthBtn = (props) => {
     const alert = useAlert()
 
-    const [isLogined, setIsLogined] = useState(false)
-    const [accessToken, setAccessToken] = useState('')
-
-    const { setUser } = useAuth()
-
-    const login = (response) => {
-        if (response.accessToken) {
-            setIsLogined(true)
-            setAccessToken(response.accessToken)
-
-            // Make backend login call using accessToken or other Google creds
-            AuthApi.signInWithGoogle(response.tokenId)
-                .then((res) => {
-                    localStorage.setItem('token', res.token)
-                    AuthApi.getUser().then((res) => {
-                        setUser(res)
-                    })
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-        } else {
-            handleLoginFailure(response)
-        }
-    }
-
-    const logout = (response) => {
-        setIsLogined(false)
-        setAccessToken('')
-    }
+    const { loginWithGoogle } = useAuth()
 
     const handleLoginFailure = (response) => {
         console.log(response)
-        // alert.error("Failed to log in");
+        alert.error('Failed to log in')
     }
-
-    const handleLogoutFailure = (response) => {
-        console.log(response)
-        // alert.error("Failed to log out");
-    }
-
-    // if (userId) {
-    //     return <Redirect to="/" />
-    // }
 
     return (
-        <Fragment>
-            {isLogined ? (
-                <GoogleLogout
-                    clientId={CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess={logout}
-                    onFailure={handleLogoutFailure}
-                    render={(renderProps) => (
-                        <GoogleButton
-                            onClick={renderProps.onClick}
-                            disabled={renderProps.disabled}
-                            buttonText="Logout"
-                        />
-                    )}
-                ></GoogleLogout>
-            ) : (
-                <Fragment>
-                    <GoogleLogin
-                        clientId={CLIENT_ID}
-                        render={(renderProps) => (
-                            <GoogleButton
-                                onClick={renderProps.onClick}
-                                disabled={renderProps.disabled}
-                                buttonText={props.buttonText}
-                            />
-                        )}
-                        onSuccess={login}
-                        onFailure={handleLoginFailure}
-                        cookiePolicy={'single_host_origin'}
-                        responseType="code,token"
-                        // isSignedIn={true}
-                    />
-                </Fragment>
+        <GoogleLogin
+            clientId={config.GOOGLE_OAUTH_CLIENT_ID}
+            render={(renderProps) => (
+                <GoogleButton
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                    buttonText={props.buttonText}
+                />
             )}
-        </Fragment>
+            onSuccess={(e) => {
+                loginWithGoogle(e.accessToken)
+            }}
+            onFailure={handleLoginFailure}
+            cookiePolicy={'single_host_origin'}
+            responseType="token"
+            scope="openid profile email"
+        />
     )
 }
 

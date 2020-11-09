@@ -1,10 +1,8 @@
 // Created: 22 June 2020
 
 import React from 'react'
-import { Link, Redirect } from 'react-router-dom'
 
 // APIs & utils
-// import useAuth from "components/auth/useAuth";
 
 // Screens
 
