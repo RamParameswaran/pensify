@@ -31,19 +31,10 @@ export default function Home() {
     // const [headings, setHeadings] = useState()
     // const [notes, setNotes] = useState()
 
+    const { activeNote, showNoteModal, toggleShowNoteModal } = useLayout()
+
     const { data, error, loading } = useQuery(gql`
         query {
-            headings {
-                _id
-                order
-                title
-                notes {
-                    _id
-                    title
-                    content
-                }
-            }
-
             notes {
                 _id
                 title
@@ -72,9 +63,8 @@ export default function Home() {
         }
     })
 
-    all_tags.map((tag, index) => {
+    all_tags.map((tag) => {
         headings.push({
-            _id: index,
             title: tag,
             notes: notes.filter((note) => {
                 if (note.tags) {
@@ -85,23 +75,32 @@ export default function Home() {
             }),
         })
     })
-    headings.push({
-        _id: null,
-        title: '<Untagged>',
-        notes: notes.filter((note) => !note.tags),
-    })
 
     return (
-        <Grid>
-            {headings.map((heading) => {
-                return (
-                    <Heading
-                        key={heading.id}
-                        heading={heading}
-                        notes={heading.notes}
-                    />
-                )
-            })}
-        </Grid>
+        <Fragment>
+            <Grid>
+                {headings.map((heading) => {
+                    return (
+                        <Heading
+                            key={heading.id}
+                            heading={heading}
+                            notes={heading.notes}
+                        />
+                    )
+                })}
+            </Grid>
+
+            <Modal
+                open={showNoteModal}
+                onClose={toggleShowNoteModal}
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <NoteModal note={activeNote} />
+            </Modal>
+        </Fragment>
     )
 }

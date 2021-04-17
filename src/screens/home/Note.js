@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { useLayout } from 'components/layout/LayoutContext'
+
 import { Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -21,8 +23,16 @@ const Note = (props) => {
     const classes = useStyles()
     const { note } = props
 
+    const { setActiveNote, toggleShowNoteModal } = useLayout()
+
     return (
-        <div className={classes.note}>
+        <div
+            className={classes.note}
+            onClick={() => {
+                toggleShowNoteModal()
+                setActiveNote(note)
+            }}
+        >
             <Typography variant="body1" gutterBottom>
                 {note.content}
             </Typography>
