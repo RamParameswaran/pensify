@@ -22,9 +22,9 @@ const useAuth = () => {
         })
     }
 
-    function loginWithGoogle(code) {
+    function loginWithGoogle(token) {
         // Login user with Realm backend
-        const credentials = Realm.Credentials.google(code)
+        const credentials = Realm.Credentials.google(token)
         app.logIn(credentials).then((user) => {
             setState(user)
         })

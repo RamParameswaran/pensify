@@ -108,12 +108,13 @@ const GoogleAuthBtn = (props) => {
                 />
             )}
             onSuccess={(e) => {
-                loginWithGoogle(e.accessToken)
+                console.log(e)
+                loginWithGoogle(e.tokenId)
             }}
             onFailure={handleLoginFailure}
             cookiePolicy={'single_host_origin'}
             responseType="token"
-            scope="openid profile email"
+            scope="profile email"
         />
     )
 }
