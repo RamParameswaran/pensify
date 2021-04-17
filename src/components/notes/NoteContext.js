@@ -1,22 +1,22 @@
 import React, { useContext, useState } from 'react'
 
-const LayoutContext = React.createContext([{}, () => {}])
+const NoteContext = React.createContext([{}, () => {}])
 
-const LayoutProvider = (props) => {
+const NoteProvider = (props) => {
     const [state, setState] = useState({
         showNoteModal: false,
         activeNote: null,
     })
 
     return (
-        <LayoutContext.Provider value={[state, setState]}>
+        <NoteContext.Provider value={[state, setState]}>
             {props.children}
-        </LayoutContext.Provider>
+        </NoteContext.Provider>
     )
 }
 
-const useLayout = () => {
-    const [state, setState] = useContext(LayoutContext)
+const useNote = () => {
+    const [state, setState] = useContext(NoteContext)
 
     function setActiveNote(note) {
         setState((state) => ({ ...state, activeNote: note }))
@@ -39,4 +39,4 @@ const useLayout = () => {
     }
 }
 
-export { LayoutContext, LayoutProvider, useLayout }
+export { NoteContext, NoteProvider, useNote }

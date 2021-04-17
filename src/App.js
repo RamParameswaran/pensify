@@ -16,7 +16,7 @@ import Login from 'screens/login/Login'
 
 import useAuth from 'components/auth/useAuth'
 import Header from 'components/header/Header'
-import { LayoutProvider } from 'components/layout/LayoutContext'
+import { NoteProvider } from 'components/notes/NoteContext'
 
 // import { makeStyles } from '@material-ui/core/styles'
 
@@ -62,9 +62,9 @@ function App() {
             {user ? (
                 // If user is authenticated - return Home screen
                 <ApolloProvider client={client}>
-                    <LayoutProvider>
+                    <NoteProvider>
                         <Home />
-                    </LayoutProvider>
+                    </NoteProvider>
                 </ApolloProvider>
             ) : (
                 // If user is NOT authenticated - return Login screen

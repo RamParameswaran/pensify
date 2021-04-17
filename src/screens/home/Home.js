@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 
 import Grid from 'components/grid/Grid'
-import { useLayout } from 'components/layout/LayoutContext'
+import { useNote } from 'components/notes/NoteContext'
 import NoteModal from 'components/notes/NoteModal'
 import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
 
@@ -31,7 +31,7 @@ export default function Home() {
     // const [headings, setHeadings] = useState()
     // const [notes, setNotes] = useState()
 
-    const { activeNote, showNoteModal, toggleShowNoteModal } = useLayout()
+    const { activeNote, showNoteModal, toggleShowNoteModal } = useNote()
 
     const { data, error, loading } = useQuery(gql`
         query {
