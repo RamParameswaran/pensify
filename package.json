@@ -32,7 +32,7 @@
         "react-masonry-css": "^1.0.14",
         "react-router-dom": "^5.1.2",
         "react-scripts": "3.4.1",
-        "realm-web": "^1.0.0"
+        "realm-web": "^1.2.1"
     },
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
