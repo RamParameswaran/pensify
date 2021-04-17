@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 
 import Grid from 'components/grid/Grid'
+import { useLayout } from 'components/layout/LayoutContext'
+import NoteModal from 'components/notes/NoteModal'
+import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
+
+import { Modal } from '@material-ui/core'
 
 import Heading from './Heading'
 
@@ -50,7 +55,8 @@ export default function Home() {
         }
     `)
 
-    if (loading) return null
+    if (loading) return <FullscreenSpinner />
+
     if (error) {
         // console.log(error)
         return null
