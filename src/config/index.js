@@ -9,8 +9,7 @@ const config = {
         : 'https://example.com/api/v1',
 
     GA_TRACKING_ID: staging ? 'UA-123456789-0' : 'UA-123456789-0',
-    GOOGLE_OAUTH_CLIENT_ID:
-        '602173608399-k0dq45qjc51j9l5l37kkahiv17fuh8t2.apps.googleusercontent.com',
+    GOOGLE_OAUTH_CLIENT_ID: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
 
     staging: staging,
 }
