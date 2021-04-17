@@ -11,7 +11,7 @@ import React, { useRef, useEffect } from 'react'
 // Styles
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     gridWrapper: {
         display: 'grid',
         'grid-gap': 15,

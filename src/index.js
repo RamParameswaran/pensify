@@ -1,22 +1,15 @@
-// Created: 15 May 2020
 import React from 'react'
 import ReactDOM from 'react-dom'
+
+import App from 'App'
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import * as serviceWorker from 'serviceWorker'
 
-// APIs & utils
+import AlertTemplate from 'components/alerts/AlertTemplate'
 import { AuthProvider } from 'components/auth/AuthContext'
 
-// Screens
-
-// Components
-import ReactGA from 'react-ga'
-import App from 'App'
-
-// Styles
-import { ThemeProvider } from '@material-ui/styles'
 import { createMuiTheme } from '@material-ui/core/styles'
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import AlertTemplate from 'components/alerts/AlertTemplate'
+import { ThemeProvider } from '@material-ui/styles'
 import 'index.css'
 
 const theme = createMuiTheme({

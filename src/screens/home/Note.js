@@ -1,18 +1,7 @@
-// Created: 09 September 2020
+import React from 'react'
 
-import React, { Fragment, useRef } from 'react'
-// import { Link, withRouter } from "react-router-dom";
-
-// APIs & utils
-import { Draggable } from 'react-beautiful-dnd'
-
-// Screens
-
-// Components
-
-// Styles
-import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -30,26 +19,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Note = (props) => {
     const classes = useStyles()
-    const { note, index } = props
+    const { note } = props
 
     return (
-        <Draggable draggableId={`${note._id}`} index={index}>
-            {(provided, snapshot) => (
-                <div
-                    className={classes.note}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    className={`${classes.note} ${
-                        snapshot.isDragging && classes.isDragging
-                    }`}
-                >
-                    <Typography variant="body1" gutterBottom>
-                        {note.content}
-                    </Typography>
-                </div>
-            )}
-        </Draggable>
+        <div className={classes.note}>
+            <Typography variant="body1" gutterBottom>
+                {note.content}
+            </Typography>
+        </div>
     )
 }
 

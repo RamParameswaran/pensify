@@ -3,28 +3,28 @@
 // 		i) it carries all state for the `user` object
 //		ii) it is the Context Provider for all child components which want to access/manipulate the `user` state
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+
 import * as Realm from 'realm-web'
 
-// APIs & utils
 import config from 'config'
 
-// Components
-import { useAlert } from 'react-alert'
 import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
-
-// Styles
 
 const AuthContext = React.createContext([{}, () => {}])
 
 const app = Realm.App.getApp(config.REALM_APP_ID)
 
 const AuthProvider = (props) => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
-    // 2) Create the `player` object and define initial State values
     var [state, setState] = useState(app.currentUser)
-    const alert = useAlert()
+
+    useEffect(() => {
+        if (app.currentUser) {
+            setLoading(false)
+        }
+    }, [app.currentUser])
 
     return (
         <AuthContext.Provider value={[state, setState]}>

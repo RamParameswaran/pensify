@@ -1,10 +1,9 @@
-// Created: 18 June 2020
-
 import { useContext } from 'react'
+
 import * as Realm from 'realm-web'
 
-// APIs & utils
 import config from 'config'
+
 import { AuthContext } from './AuthContext'
 
 // Components
@@ -32,7 +31,7 @@ const useAuth = () => {
 
     function logout() {
         // Log out the current user
-        app.currentUser.logOut().then((res) => {
+        app.currentUser.logOut().then(() => {
             setState(null)
         })
     }

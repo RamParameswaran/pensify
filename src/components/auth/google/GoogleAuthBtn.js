@@ -1,25 +1,19 @@
-// Created: 26 June 2020
-
 import React from 'react'
-import * as Realm from 'realm-web'
 
-// APIs & utils
+import { useAlert } from 'react-alert'
+import { GoogleLogin } from 'react-google-login'
+// import * as Realm from 'realm-web'
+
 import config from 'config'
+
 import useAuth from 'components/auth/useAuth'
 
-// Screens
-
-// Components
-import { GoogleLogin } from 'react-google-login'
-import { useAlert } from 'react-alert'
-
-// Styles
-import { makeStyles } from '@material-ui/core/styles'
 import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
-const app = Realm.App.getApp(config.REALM_APP_ID)
+// const app = Realm.App.getApp(config.REALM_APP_ID)
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     button: {
         minHeight: 45,
         width: 'calc(100% - 20px)',
@@ -92,8 +86,8 @@ const GoogleAuthBtn = (props) => {
 
     const { loginWithGoogle } = useAuth()
 
-    const handleLoginFailure = (response) => {
-        console.log(response)
+    const handleLoginFailure = () => {
+        // console.log(response)
         alert.error('Failed to log in')
     }
 
@@ -108,7 +102,7 @@ const GoogleAuthBtn = (props) => {
                 />
             )}
             onSuccess={(e) => {
-                console.log(e)
+                // console.log(e)
                 loginWithGoogle(e.tokenId)
             }}
             onFailure={handleLoginFailure}

@@ -2,19 +2,15 @@
 import React, { Fragment } from 'react'
 import { withRouter, Link } from 'react-router-dom'
 
-// APIs & utils
-import useAuth from 'components/auth/useAuth'
-
-// Screens
-
-// Components
-import SearchWidget from './SearchWidget'
 import logo_placeholder from 'assets/logos/logo_placeholder.png'
 
-// Styles
+import useAuth from 'components/auth/useAuth'
+
 import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@material-ui/core'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
+
+import SearchWidget from './SearchWidget'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,10 +31,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function Header(props) {
+function Header() {
     const classes = useStyles()
 
-    const { user, logout } = useAuth()
+    const { logout, user } = useAuth()
 
     // user Menu handling
     const [anchorEl, setAnchorEl] = React.useState(null)
