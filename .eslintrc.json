@@ -2,7 +2,8 @@
     "parser": "@babel/eslint-parser",
     "parserOptions": {
         "sourceType": "module",
-        "allowImportExportEverywhere": true
+        "allowImportExportEverywhere": true,
+        "requireConfigFile": false
       },
     "plugins": ["sort-destructure-keys", "eslint-plugin-import"],
     "extends": [
