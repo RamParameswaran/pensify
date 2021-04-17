@@ -11,17 +11,7 @@ export default function Home() {
 
     return (
         <Fragment>
-            <Grid>
-                {headings.map((heading) => {
-                    return (
-                        <Heading
-                            key={heading.id}
-                            heading={heading}
-                            notes={heading.notes}
-                        />
-                    )
-                })}
-            </Grid>
+            <Grid />
 
             <Modal
                 open={showNoteModal}
