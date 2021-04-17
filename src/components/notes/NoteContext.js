@@ -7,13 +7,28 @@ import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
 
 const NoteContext = React.createContext([{}, () => {}])
 
-const generateEmptyNote = () => ({
-    title: '',
-    created: new Date(),
-    modified: new Date(),
-    tags: [],
-    content: '',
-})
+const generateEmptyNote = () => {
+    let now = new Date()
+    return {
+        title: '',
+        created: now.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        }),
+        modified: now.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        }),
+        tags: [],
+        content: '',
+    }
+}
 
 const NoteProvider = (props) => {
     const query = useQuery(gql`
