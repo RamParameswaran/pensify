@@ -1,16 +1,11 @@
 // Created: 15 May 2020
 import React, { Fragment } from 'react'
-import { withRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import logo_placeholder from 'assets/logos/logo_placeholder.png'
 
-import useAuth from 'components/auth/useAuth'
-
-import { AppBar, Toolbar, IconButton, Menu, MenuItem } from '@material-ui/core'
+import { AppBar, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import MenuIcon from '@material-ui/icons/Menu'
-
-import SearchWidget from './SearchWidget'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,23 +26,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function Header() {
+function Header(props) {
     const classes = useStyles()
-
-    const { logout, user } = useAuth()
-
-    // user Menu handling
-    const [anchorEl, setAnchorEl] = React.useState(null)
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget)
-    }
-    const handleClose = () => {
-        setAnchorEl(null)
-    }
-    const handleLogout = () => {
-        setAnchorEl(null)
-        logout()
-    }
 
     return (
         <Fragment>
@@ -62,41 +42,7 @@ function Header() {
                         />
                     </Link>
 
-                    {user && (
-                        <Fragment>
-                            <div style={{ flexGrow: 1 }}>
-                                <SearchWidget />
-                            </div>
-                            <div>
-                                <IconButton
-                                    aria-controls="simple-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleClick}
-                                    className={classes.iconPrimary}
-                                >
-                                    <MenuIcon className={classes.iconPrimary} />
-                                </IconButton>
-
-                                <Menu
-                                    id="simple-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                >
-                                    <MenuItem onClick={handleClose}>
-                                        Profile
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
-                                        My account
-                                    </MenuItem>
-                                    <MenuItem onClick={handleLogout}>
-                                        Logout
-                                    </MenuItem>
-                                </Menu>
-                            </div>
-                        </Fragment>
-                    )}
+                    {props.children}
                 </Toolbar>
             </AppBar>
 
@@ -105,4 +51,4 @@ function Header() {
     )
 }
 
-export default withRouter(Header)
+export default Header

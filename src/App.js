@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 
 import {
@@ -16,6 +16,7 @@ import Login from 'screens/login/Login'
 
 import useAuth from 'components/auth/useAuth'
 import Header from 'components/header/Header'
+import HeaderAuthenticated from 'components/header/HeaderAuthenticated'
 import { NoteProvider } from 'components/notes/NoteContext'
 
 // import { makeStyles } from '@material-ui/core/styles'
@@ -57,18 +58,20 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Header />
-
             {user ? (
                 // If user is authenticated - return Home screen
                 <ApolloProvider client={client}>
                     <NoteProvider>
+                        <HeaderAuthenticated />
                         <Home />
                     </NoteProvider>
                 </ApolloProvider>
             ) : (
                 // If user is NOT authenticated - return Login screen
-                <Login />
+                <Fragment>
+                    <Header />
+                    <Login />
+                </Fragment>
             )}
         </BrowserRouter>
     )
