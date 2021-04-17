@@ -1,18 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import clsx from 'clsx'
+import {
+    ContentState,
+    convertFromRaw,
+    // convertToRaw,
+    Editor,
+    EditorState,
+} from 'draft-js'
+import 'draft-js/dist/Draft.css'
 
 import { useNote } from 'components/notes/NoteContext'
 
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader'
-import Collapse from '@material-ui/core/Collapse'
+import {
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Collapse,
+    IconButton,
+    Typography,
+} from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
-import IconButton from '@material-ui/core/IconButton'
 import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
@@ -41,12 +51,66 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const SubHeader = ({ note }) => (
+    <div>
+        Last modified: {note.modified} <br />
+        Tags: {note.tags && note.tags.join(', ')}
+    </div>
+)
+
 export default function NoteModal() {
     const classes = useStyles()
 
     const { activeNote } = useNote()
 
     const [expanded, setExpanded] = useState(false)
+
+    const [titleState, setTitleState] = useState(() => {
+        if (activeNote && activeNote.title) {
+            // If the note title already exists
+            return EditorState.createWithContent(
+                ContentState.createFromText(activeNote.title)
+            )
+        } else {
+            // Else create a new draftjs EditorState object
+            return EditorState.createEmpty()
+        }
+    })
+
+    const [contentState, setContentState] = useState(() => {
+        if (activeNote && activeNote.content) {
+            // If the note content already exists
+
+            if (typeof activeNote.content === 'string') {
+                // i) as a plaintext string
+                return EditorState.createWithContent(
+                    ContentState.createFromText(activeNote.content)
+                )
+            } else {
+                // ii) as a draftjs json blob
+                return convertFromRaw(activeNote.content)
+            }
+        } else {
+            // Else create a new draftjs EditorState object
+
+            return EditorState.createEmpty()
+        }
+    })
+
+    useEffect(() => {
+        // Updates the `note.content` property (json object)
+        // console.log(convertToRaw(contentState.getCurrentContent()))
+    }, [contentState])
+
+    useEffect(() => {
+        // Updates the `note.title` property (string)
+        // console.log(titleState.getCurrentContent().getPlainText())
+    }, [titleState])
+
+    const editor = React.useRef(null)
+    function focusEditor() {
+        editor.current.focus()
+    }
 
     const handleExpandClick = () => {
         setExpanded(!expanded)
@@ -60,13 +124,35 @@ export default function NoteModal() {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={activeNote.tags.join('')}
-                subheader={`Last modified: ${activeNote.modified}`}
-                classes={{ subheader: classes.subheader }}
+                disableTypography
+                title={
+                    <Editor
+                        ref={editor}
+                        editorState={titleState}
+                        onChange={setTitleState}
+                        placeholder="Write something!"
+                    />
+                }
+                subheader={<SubHeader note={activeNote} />}
             />
+
             <CardContent>
                 <Typography variant="body2" color="textPrimary" component="p">
-                    {activeNote.content}
+                    <div
+                        style={{
+                            border: '1px solid black',
+                            minHeight: '6em',
+                            cursor: 'text',
+                        }}
+                        onClick={focusEditor}
+                    >
+                        <Editor
+                            ref={editor}
+                            editorState={contentState}
+                            onChange={setContentState}
+                            placeholder="Give your note a title!"
+                        />
+                    </div>
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
