@@ -1,12 +1,76 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+
+import { useQuery } from '@apollo/client'
+import gql from 'graphql-tag'
+
+import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
 
 const NoteContext = React.createContext([{}, () => {}])
 
 const NoteProvider = (props) => {
+    const query = useQuery(gql`
+        query {
+            notes {
+                _id
+                title
+                content
+                created
+                modified
+                tags
+            }
+        }
+    `)
+
     const [state, setState] = useState({
-        showNoteModal: false,
+        notesLoading: true,
+
+        notes: [],
+        headings: [],
         activeNote: null,
+
+        showNoteModal: false,
     })
+
+    useEffect(() => {
+        setState((state) => ({ ...state, notesLoading: query.loading }))
+    }, [query.loading])
+
+    useEffect(() => {
+        var headings = []
+        var notes = query.data && query.data.notes
+
+        // If query.data exists, we create an array of `heading` object, which are
+        // just a list of grouped-notes, grouped by `note.tag`.
+        if (notes) {
+            const all_tags = []
+            notes.map((note) => {
+                if (note.tags) {
+                    note.tags.map((tag) => all_tags.push(tag))
+                }
+            })
+
+            all_tags.map((tag) => {
+                headings.push({
+                    title: tag,
+                    notes: notes.filter((note) => {
+                        if (note.tags) {
+                            return note.tags.includes(tag)
+                        } else {
+                            return false
+                        }
+                    }),
+                })
+            })
+        }
+
+        setState((state) => ({
+            ...state,
+            notes: notes,
+            headings: headings,
+        }))
+    }, [query.data])
+
+    if (state.notesLoading) return <FullscreenSpinner />
 
     return (
         <NoteContext.Provider value={[state, setState]}>
@@ -31,10 +95,13 @@ const useNote = () => {
     }
 
     return {
+        notes: state.notes,
+        headings: state.headings,
         activeNote: state.activeNote,
-        showNoteModal: state.showNoteModal,
 
+        showNoteModal: state.showNoteModal,
         toggleShowNoteModal: toggleShowNoteModal,
+
         setActiveNote: setActiveNote,
     }
 }

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 
 import clsx from 'clsx'
 
+import { useNote } from 'components/notes/NoteContext'
+
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -39,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function NoteModal(props) {
+export default function NoteModal() {
     const classes = useStyles()
 
-    const { note } = props
+    const { activeNote } = useNote()
 
     const [expanded, setExpanded] = useState(false)
 
@@ -58,13 +60,13 @@ export default function NoteModal(props) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={note.tags.join('')}
-                subheader={`Last modified: ${note.modified}`}
+                title={activeNote.tags.join('')}
+                subheader={`Last modified: ${activeNote.modified}`}
                 classes={{ subheader: classes.subheader }}
             />
             <CardContent>
                 <Typography variant="body2" color="textPrimary" component="p">
-                    {note.content}
+                    {activeNote.content}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
