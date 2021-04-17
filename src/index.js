@@ -28,8 +28,8 @@ const theme = createMuiTheme({
             main: '#e14d4d', // Red
         },
         text: {
-            primary: '#000', // White
-            secondary: '#fff', // Black
+            primary: '#000', // Black
+            secondary: '#fff', // White
             disabled: 'rgb(128,128,128)', // Grey
             error: '#e14d4d', // Red
         },
