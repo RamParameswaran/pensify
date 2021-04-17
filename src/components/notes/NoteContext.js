@@ -7,6 +7,14 @@ import FullscreenSpinner from 'components/spinners/FullscreenSpinner'
 
 const NoteContext = React.createContext([{}, () => {}])
 
+const generateEmptyNote = () => ({
+    title: '',
+    created: new Date(),
+    modified: new Date(),
+    tags: [],
+    content: '',
+})
+
 const NoteProvider = (props) => {
     const query = useQuery(gql`
         query {
@@ -26,7 +34,7 @@ const NoteProvider = (props) => {
 
         notes: [],
         headings: [],
-        activeNote: null,
+        activeNote: generateEmptyNote(),
 
         showNoteModal: false,
     })
@@ -90,7 +98,7 @@ const useNote = () => {
         setState((state) => ({
             ...state,
             showNoteModal: !state.showNoteModal,
-            activeNote: null,
+            activeNote: generateEmptyNote(),
         }))
     }
 
@@ -102,6 +110,7 @@ const useNote = () => {
         showNoteModal: state.showNoteModal,
         toggleShowNoteModal: toggleShowNoteModal,
 
+        generateEmptyNote: generateEmptyNote,
         setActiveNote: setActiveNote,
     }
 }

@@ -1,4 +1,6 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+
+import { useNote } from 'components/notes/NoteContext'
 
 import { Input, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -29,6 +31,22 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchWidget() {
     const classes = useStyles()
 
+    const [searchTerm, setSearchTerm] = useState('')
+
+    const {
+        generateEmptyNote,
+        setActiveNote,
+        showNoteModal,
+        toggleShowNoteModal,
+    } = useNote()
+
+    useEffect(() => {
+        // When closing the NoteModal, set the searchTerm back to its initial state
+        if (!showNoteModal) {
+            setSearchTerm('')
+        }
+    }, [showNoteModal])
+
     return (
         <Fragment>
             <Input
@@ -36,13 +54,21 @@ export default function SearchWidget() {
                 className={classes.input}
                 classes={{ input: classes.input_base }}
                 placeholder="Search ... or start a new note"
+                value={searchTerm}
+                onChange={(e) => {
+                    setSearchTerm(e.target.value)
+                }}
             />
             <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 color="secondary"
                 onClick={() => {
-                    // console.log('Pressed add note button!')
+                    toggleShowNoteModal()
+                    setActiveNote({
+                        ...generateEmptyNote(),
+                        content: searchTerm,
+                    })
                 }}
                 className={classes.button}
             >
