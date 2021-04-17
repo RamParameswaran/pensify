@@ -33,7 +33,7 @@ const Note = (props) => {
     const { note, index } = props
 
     return (
-        <Draggable draggableId={`${note.id}`} index={index}>
+        <Draggable draggableId={`${note._id}`} index={index}>
             {(provided, snapshot) => (
                 <div
                     className={classes.note}

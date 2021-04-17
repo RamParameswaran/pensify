@@ -36,7 +36,7 @@ export default function Heading(props) {
                 <Fragment>
                     <Typography variant="h6">{heading.title}</Typography>
                     {notes.map((note, index) => (
-                        <Note key={note.id} note={note} index={index} />
+                        <Note key={note._id} note={note} index={index} />
                     ))}
                 </Fragment>
             )
@@ -45,13 +45,13 @@ export default function Heading(props) {
     )
 
     return (
-        <Droppable droppableId={`${heading.id}`}>
+        <Droppable droppableId={`${heading._id}`}>
             {(provided, snapshot) => (
                 <Card
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     raised
-                    key={heading.id}
+                    key={heading._id}
                     className={`${classes.card} ${
                         snapshot.isDraggingOver && classes.isDraggingOver
                     }`}

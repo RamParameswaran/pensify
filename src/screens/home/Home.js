@@ -1,8 +1,10 @@
 // Created: 09 July 2020
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // APIs & utils
+import { useQuery } from '@apollo/client'
+import gql from 'graphql-tag'
 
 // Screens
 
@@ -29,8 +31,38 @@ const useStyles = makeStyles((theme) => ({
 export default function Home(props) {
     const classes = useStyles()
 
-    const [headings, setHeadings] = useState(initialData.headings)
-    const [notes, setNotes] = useState(initialData.notes)
+    // const [headings, setHeadings] = useState()
+    // const [notes, setNotes] = useState()
+
+    const { loading, error, data } = useQuery(gql`
+        query {
+            headings {
+                _id
+                order
+                title
+                notes {
+                    _id
+                    title
+                    content
+                }
+            }
+
+            notes {
+                _id
+                title
+                content
+            }
+        }
+    `)
+
+    if (loading) return null
+    if (error) {
+        console.log(error)
+        return null
+    }
+
+    var headings = data.headings
+    var notes = data.notes
 
     /* function: `onDropNote`
         Drops a `note` object (draggable, source) into a 'heading' object (destination). Updates the 
@@ -44,7 +76,7 @@ export default function Home(props) {
             - null
     */
     const onDropNote = (draggableId, source, destination) => {
-        const note_obj = notes.find((item) => String(item.id) == draggableId)
+        const note_obj = notes.find((item) => String(item._id) == draggableId)
         const heading_obj = headings.find(
             (item) => String(item.id) == destination.droppableId
         )
@@ -52,23 +84,23 @@ export default function Home(props) {
         // Create a new array `notes_list` to avoid mutating the state array `notes`
         // Remove the dragged note item from this array
         const notes_list = Array.from(notes).filter(
-            (item) => item.id !== note_obj.id
+            (item) => item._id !== note_obj._id
         )
 
         // Split `notes_list` into two groups:
         // i) `destination_notes`: notes in the destination heading (which we'll have to insert the dragged note)
         // ii) `other_notes`: everything else (for which no action is required)
         const destination_notes = notes_list.filter(
-            (item) => item.heading === heading_obj.id
+            (item) => item.heading === heading_obj._id
         )
         const other_notes = notes_list.filter(
-            (item) => item.heading !== heading_obj.id
+            (item) => item.heading !== heading_obj._id
         )
 
         // Splice the new (updated) note into correct position
         destination_notes.splice(destination.index, 0, {
             ...note_obj,
-            heading: heading_obj.id,
+            heading: heading_obj._id,
         })
 
         // Reassign `note.order` by starting at 0 and iterating through all `destination_notes`
@@ -77,7 +109,7 @@ export default function Home(props) {
         }
 
         // set state to include `new_destination_notes` and all `other_notes` (minus dragged note)
-        setNotes([...destination_notes, ...other_notes])
+        notes = [...destination_notes, ...other_notes]
     }
 
     /* function: `onDragEnd`
@@ -125,14 +157,11 @@ export default function Home(props) {
                 {headings
                     .sort((a, b) => a.order - b.order)
                     .map((heading) => {
-                        var note_array = notes
-                            .filter((note) => note.heading === heading.id)
-                            .sort((a, b) => a.order - b.order)
                         return (
                             <Heading
                                 key={heading.id}
                                 heading={heading}
-                                notes={note_array}
+                                notes={heading.notes}
                             />
                         )
                     })}
