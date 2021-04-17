@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import App from 'App'
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
@@ -62,7 +63,9 @@ ReactDOM.render(
         <React.StrictMode>
             <AlertProvider template={AlertTemplate} {...alert_options}>
                 <AuthProvider>
-                    <App />
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
                 </AuthProvider>
             </AlertProvider>
         </React.StrictMode>

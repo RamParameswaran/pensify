@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-import { BrowserRouter } from 'react-router-dom'
 
 import {
     ApolloProvider,
@@ -52,28 +51,22 @@ const client = new ApolloClient({
 })
 
 function App() {
-    // const classes = useStyles()
-
     const { user } = useAuth()
 
-    return (
-        <BrowserRouter>
-            {user ? (
-                // If user is authenticated - return Home screen
-                <ApolloProvider client={client}>
-                    <NoteProvider>
-                        <HeaderAuthenticated />
-                        <Home />
-                    </NoteProvider>
-                </ApolloProvider>
-            ) : (
-                // If user is NOT authenticated - return Login screen
-                <Fragment>
-                    <Header />
-                    <Login />
-                </Fragment>
-            )}
-        </BrowserRouter>
+    return user ? (
+        // If user is authenticated - return Home screen
+        <ApolloProvider client={client}>
+            <NoteProvider>
+                <HeaderAuthenticated />
+                <Home />
+            </NoteProvider>
+        </ApolloProvider>
+    ) : (
+        // If user is NOT authenticated - return Login screen
+        <Fragment>
+            <Header />
+            <Login />
+        </Fragment>
     )
 }
 
