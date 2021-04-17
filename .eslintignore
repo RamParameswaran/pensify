@@ -6,3 +6,5 @@
 **/build/*
 **/src/serviceWorker.js
 **/src/components/alerts/icons/*
+
+**/*.test.js
