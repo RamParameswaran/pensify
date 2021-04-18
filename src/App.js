@@ -13,7 +13,7 @@ import config from 'config'
 import Home from 'screens/home/Home'
 import Login from 'screens/login/Login'
 
-import useAuth from 'components/auth/useAuth'
+import { useAuth } from 'components/auth/useAuth'
 import Header from 'components/header/Header'
 import HeaderAuthenticated from 'components/header/HeaderAuthenticated'
 import { NoteProvider } from 'components/notes/NoteContext'

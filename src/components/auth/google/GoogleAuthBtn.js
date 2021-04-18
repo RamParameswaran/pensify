@@ -6,7 +6,7 @@ import { GoogleLogin } from 'react-google-login'
 
 import config from 'config'
 
-import useAuth from 'components/auth/useAuth'
+import { useAuth } from 'components/auth/useAuth'
 
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'

@@ -10,7 +10,7 @@ import { AuthContext } from './AuthContext'
 
 const app = Realm.App.getApp(config.REALM_APP_ID)
 
-const useAuth = () => {
+export const useAuth = () => {
     const [state, setState] = useContext(AuthContext)
 
     function loginWithFacebook(accessToken) {
@@ -43,5 +43,3 @@ const useAuth = () => {
         user: state,
     }
 }
-
-export default useAuth

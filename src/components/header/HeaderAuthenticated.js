@@ -1,7 +1,7 @@
 // Created: 15 May 2020
 import React, { Fragment, useState } from 'react'
 
-import useAuth from 'components/auth/useAuth'
+import { useAuth } from 'components/auth/useAuth'
 import Header from 'components/header/Header'
 
 import { IconButton, Menu, MenuItem } from '@material-ui/core'
