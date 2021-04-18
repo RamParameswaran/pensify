@@ -22,21 +22,28 @@ jobs:
         node-version: ${{ matrix.node-version }}
       
     - name: Yarn Install
-      run: |
-        yarn install
-
-    - name: Production Build
-      run: |
-          CI='' yarn build
+      run: yarn install
 
     - name: Unit Tests
-      run: |
-        CI='' yarn test -- --watchAll=false
+      run: CI='' yarn test -- --watchAll=false
           
   deploy:
     runs-on: ubuntu-latest
     needs: test
     steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup Node.js v14
+      uses: actions/setup-node@v1
+      with:
+        node-version: "14"
+      
+    - name: Yarn Install
+      run: yarn install
+
+    - name: Production Build
+      run: CI='' yarn build
+
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
