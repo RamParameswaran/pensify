@@ -59,6 +59,7 @@ function HeaderAuthenticated() {
                             aria-haspopup="true"
                             onClick={handleClick}
                             className={classes.iconPrimary}
+                            data-testid="user-settings-menu-button"
                         >
                             <MenuIcon className={classes.iconPrimary} />
                         </IconButton>
