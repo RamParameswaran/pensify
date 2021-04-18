@@ -1,31 +1,15 @@
-NoteProject
+Pensify 
 ===========
 
-Web and mobile app for note taking
+**Web and mobile app for note taking**
 
-.. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
-     :target: https://github.com/pydanny/cookiecutter-django/
-     :alt: Built with Cookiecutter Django
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-     :target: https://github.com/ambv/black
-     :alt: Black code style
+.. image:: https://img.shields.io/badge/react%20-%2320232a.svg?&style=for-the-badge&logo=react&logoColor=%2361DAFB
+     :alt: Built with React
+.. image:: https://img.shields.io/badge/MongoDB_Realm-%234ea94b.svg?&style=for-the-badge&logo=mongodb&logoColor=white
+     :alt: Black code MongoDB Realm
 
 
 :License: MIT
-
-
-Basic Commands
---------------
-
-
-
-
-
-Deployment
-----------
-
-The following details how to deploy this application.
-
 
 
 
