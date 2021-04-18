@@ -1,18 +1,10 @@
-// Created: 22 June 2020
-
 import React from 'react'
 
-// APIs & utils
-
-// Screens
-
-// Components
-import GoogleAuthBtn from 'components/auth/google/GoogleAuthBtn'
 import FacebookAuthBtn from 'components/auth/facebook/FacebookAuthBtn'
+import GoogleAuthBtn from 'components/auth/google/GoogleAuthBtn'
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Grid, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -41,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Login(props) {
+export default function Login() {
     const classes = useStyles()
     return (
         <div className={classes.root}>

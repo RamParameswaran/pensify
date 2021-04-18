@@ -1,22 +1,15 @@
-// Created: 26 June 2020
-
 import React from 'react'
 
-// APIs & utils
-import useAuth from 'components/auth/useAuth'
-
-// Screens
-
-// Components
+import { useAlert } from 'react-alert'
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { AiFillFacebook } from 'react-icons/ai'
-import { useAlert } from 'react-alert'
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles'
+import { useAuth } from 'components/auth/useAuth'
+
 import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     button: {
         minHeight: 45,
         width: 'calc(100% - 20px)',
@@ -65,7 +58,6 @@ const FacebookButton = (props) => {
 }
 
 export default function FacebookAuthBtn(props) {
-    const classes = useStyles()
     const alert = useAlert()
 
     const { loginWithFacebook } = useAuth()
@@ -78,8 +70,7 @@ export default function FacebookAuthBtn(props) {
         }
     }
 
-    const handleLoginFailure = (response) => {
-        console.log(response)
+    const handleLoginFailure = () => {
         alert.error('Failed to log in')
     }
 

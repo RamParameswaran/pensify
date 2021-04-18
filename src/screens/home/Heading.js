@@ -1,29 +1,17 @@
-// Created: 09 September 2020
+import React, { Fragment } from 'react'
 
-import React, { Fragment, useRef } from 'react'
-// import { Link, withRouter } from "react-router-dom";
+import { Card, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
-// APIs & utils
-import { Droppable } from 'react-beautiful-dnd'
-
-// Screens
-
-// Components
 import Note from './Note'
 
-// Styles
-import { makeStyles } from '@material-ui/core/styles'
-import { Card, Typography } from '@material-ui/core'
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {},
     card: { padding: 10, transition: 'background-color 0.2s ease' },
-    isDraggingOver: { backgroundColor: 'rgba(0,0,0,0.1)' },
 }))
 
 export default function Heading(props) {
     const classes = useStyles()
-    const ref = useRef(null)
 
     const { heading, notes } = props
 
@@ -41,27 +29,14 @@ export default function Heading(props) {
                 </Fragment>
             )
         },
-        (prevProps, nextProps) => true // always take previous NotesList memo
+        () => true // always take previous NotesList memo
     )
 
     return (
-        <Droppable droppableId={`${heading._id}`}>
-            {(provided, snapshot) => (
-                <Card
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    raised
-                    key={heading._id}
-                    className={`${classes.card} ${
-                        snapshot.isDraggingOver && classes.isDraggingOver
-                    }`}
-                >
-                    <div style={{ height: '100%' }}>
-                        <NotesList notes={notes} heading={heading} />
-                        {provided.placeholder}
-                    </div>
-                </Card>
-            )}
-        </Droppable>
+        <Card raised key={heading._id} className={classes.card}>
+            <div style={{ height: '100%' }}>
+                <NotesList notes={notes} heading={heading} />
+            </div>
+        </Card>
     )
 }

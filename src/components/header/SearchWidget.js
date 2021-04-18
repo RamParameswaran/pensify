@@ -1,18 +1,9 @@
-// Created: 05 July 2020
+import React, { Fragment, useEffect, useState } from 'react'
 
-import React, { Fragment, useState, useEffect } from 'react'
-// import { Link, withRouter } from "react-router-dom";
+import { useNote } from 'components/notes/NoteContext'
 
-// APIs & utils
-
-// Screens
-
-// Components
-
-// Styles
-import { makeStyles } from '@material-ui/core/styles'
 import { Input, IconButton } from '@material-ui/core'
-import AddBoxIcon from '@material-ui/icons/AddBox'
+import { makeStyles } from '@material-ui/core/styles'
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd'
 
 const useStyles = makeStyles((theme) => ({
@@ -37,8 +28,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function SearchWidget(props) {
+export default function SearchWidget() {
     const classes = useStyles()
+
+    const [searchTerm, setSearchTerm] = useState('')
+
+    const {
+        generateEmptyNote,
+        setActiveNote,
+        showNoteModal,
+        toggleShowNoteModal,
+    } = useNote()
+
+    useEffect(() => {
+        // When closing the NoteModal, set the searchTerm back to its initial state
+        if (!showNoteModal) {
+            setSearchTerm('')
+        }
+    }, [showNoteModal])
 
     return (
         <Fragment>
@@ -47,13 +54,21 @@ export default function SearchWidget(props) {
                 className={classes.input}
                 classes={{ input: classes.input_base }}
                 placeholder="Search ... or start a new note"
+                value={searchTerm}
+                onChange={(e) => {
+                    setSearchTerm(e.target.value)
+                }}
             />
             <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 color="secondary"
-                onClick={(e) => {
-                    console.log('Pressed add note button!')
+                onClick={() => {
+                    toggleShowNoteModal()
+                    setActiveNote({
+                        ...generateEmptyNote(),
+                        content: searchTerm,
+                    })
                 }}
                 className={classes.button}
             >

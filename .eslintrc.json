@@ -1,0 +1,86 @@
+{
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "sourceType": "module",
+        "allowImportExportEverywhere": true,
+        "requireConfigFile": false
+      },
+    "plugins": ["sort-destructure-keys", "eslint-plugin-import"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:eslint-plugin-import/errors",
+        "prettier"
+    ],
+    "env": {
+        "es6": true,
+        "browser": true,
+        "jest": true,
+        "node": true
+    },
+    "rules": {
+        "import/first": "error",
+        "import/newline-after-import": "error",
+        "import/no-deprecated": "error",
+        "import/no-duplicates": "error",
+        "import/no-mutable-exports": "error",
+        "import/no-namespace": "off",
+        "import/no-self-import": "error",
+        "import/no-unresolved": "off",
+        "import/no-useless-path-segments": "error",
+        "import/order": [
+            "error",
+            {
+                "newlines-between": "always",
+                "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
+                "pathGroups": [
+                    {
+                        "pattern": "{react,react-dom,react-router-dom}",
+                        "group": "builtin"
+                    },
+                    {
+                        "pattern": "{api,assets,data,features,hooks,layouts,pages,services,store,styles,types,schema,utils,theme}{**,**/**}",
+                        "group": "internal"
+                    },
+                    {
+                        "pattern": "config",
+                        "group": "internal",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "services/**",
+                        "group": "internal",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "screens/**",
+                        "group": "internal",
+                        "position": "after"
+                    },
+                    {
+                        "pattern": "components/**",
+                        "group": "internal",
+                        "position": "after"
+                    },
+                    {   "pattern": "@material-ui/**", "group": "internal", "position": "after" }
+                ],
+                "pathGroupsExcludedImportTypes": [],
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
+            }
+        ],
+        "sort-destructure-keys/sort-destructure-keys": 2,
+        "react/react-in-jsx-scope": 0,
+        "react/display-name": 0,
+        "react/prop-types": "off",
+        "no-console": [
+            2,
+            {
+                "allow": ["warn", "error"]
+            }
+        ],
+        "array-element-newline": ["error", "consistent"]
+    }
+}

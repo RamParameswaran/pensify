@@ -1,17 +1,12 @@
-// Created: 09 July 2020
-
 import React, { useRef, useEffect } from 'react'
 
-// APIs & utils
+import Heading from 'screens/home/Heading'
 
-// Screens
+import { useNote } from 'components/notes/NoteContext'
 
-// Components
-
-// Styles
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     gridWrapper: {
         display: 'grid',
         'grid-gap': 15,
@@ -20,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Grid(props) {
+export default function Grid() {
     const classes = useStyles()
 
-    const gridRef = useRef(null)
+    const { headings } = useNote()
 
-    const { children } = props
+    const gridRef = useRef(null)
 
     useEffect(() => {
         const grid = gridRef.current
@@ -34,7 +29,15 @@ export default function Grid(props) {
 
     return (
         <div className={classes.gridWrapper} ref={gridRef}>
-            {children}
+            {headings.map((heading) => {
+                return (
+                    <Heading
+                        key={heading.id}
+                        heading={heading}
+                        notes={heading.notes}
+                    />
+                )
+            })}
         </div>
     )
 }

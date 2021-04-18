@@ -1,8 +1,9 @@
 import React from 'react'
+
+import CloseIcon from './icons/CloseIcon'
+import ErrorIcon from './icons/ErrorIcon'
 import InfoIcon from './icons/InfoIcon'
 import SuccessIcon from './icons/SuccessIcon'
-import ErrorIcon from './icons/ErrorIcon'
-import CloseIcon from './icons/CloseIcon'
 
 const alertStyle = {
     backgroundColor: '#1a2833',
@@ -27,7 +28,7 @@ const buttonStyle = {
     color: '#FFFFFF',
 }
 
-const AlertTemplate = ({ message, options, style, close }) => {
+const AlertTemplate = ({ close, message, options, style }) => {
     return (
         <div style={{ ...alertStyle, ...style }}>
             {options.type === 'info' && <InfoIcon />}
